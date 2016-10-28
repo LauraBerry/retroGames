@@ -8,6 +8,7 @@ This is a Commodore VIC20 game about dodging lava. It was written for a retrogam
   * Comments. Minimum: one comment for each block of aseembly, including a short high-level description of what he block does.
   * Flat project structure (All assembly can be stored at the top level folder)
   * Game operates on discrete ticks (Think 1 tick = 1 frame)
+    * The main loop decides how often tick() gets called. We'll try to call it 30 or 60 times per second.
     * Main game loop: Call tick(), wait for a given amount of time, repeat
     * If you need an event to occur after x number of ticks:
         * Set a field in memory to x
@@ -16,7 +17,7 @@ This is a Commodore VIC20 game about dodging lava. It was written for a retrogam
   * Naming Conventions
     - Code Labels: [filename]\_[functionName]\_[labelName]
     - Data Labels: 
-      - For global state: global\_[labelName], zero\_[labelName]
+      - For global state: global\_[labelName], zero\_[labelName] (For zero page)
       - For local state: [filename]\_[local]\_[label]
     - Assembler Macro Names:
       - In all caps.
@@ -26,10 +27,11 @@ This is a Commodore VIC20 game about dodging lava. It was written for a retrogam
         - lava_lava_gen_loop1: is a bit confusing.
 
 ## Scheduling with ticks
-The program flow for scheduling events based on ticks looks something like this:
 
+The program flow for scheduling events based on ticks looks something like this:
 With this logic, do\_action() will get called every 26 frames.
 
+```c
 var next\_act = 26
 
 tick() {
@@ -42,3 +44,4 @@ tick() {
         next_act -= 1
     }
 }
+```
