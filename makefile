@@ -1,20 +1,22 @@
 #
 # makefile
 # konrad, 2016-10-15 01:39
-# Used to build the programs. Generates a symbol table and list file too.
+# Builds the program.
 # Clean removes the built files.
-# change the FNAME variable for a different program name.
-# if assembly file is "derp.asm" then FNAME=derp will work.
+#
+# IN_NAME specifies what file we're compiling
+# OUT_NAME specifies what the output .prg is called.
 #
 
-FNAME=main
+IN_NAME=main
+OUT_NAME=pompeii2
 ASM=dasm
 
 all:
-	$(ASM) $(FNAME).asm -v3 -o$(FNAME).prg # -l$(FNAME).lst -s$(FNAME).sym
+	$(ASM) $(IN_NAME).asm -v3 -o$(OUT_NAME).prg # -l$(IN_NAME).lst -s$(IN_NAME).sym
 
 clean:
-	rm $(FNAME).prg $(FNAME).lst $(FNAME).sym
+	rm -f $(OUT_NAME).prg $(OUT_NAME).lst $(OUT_NAME).sym
 
 # vim:ft=make
 #
