@@ -25,17 +25,26 @@ main_basicEnd:
     hex 00 00               ; The next BASIC line would start here
 
 ; ************* Assembly Code ***************
-main_func:
     ; ==THIS SETS UP THE FONT==
     ; Point us to our new character map. Must have included the font at the end.
     LDA #CUSTOM_PTR         ; Grab the code for our custom charmap.
     STA CHAR_PTR            ; This is where the machine determines our char map.
 
-    ; Actual code goes here
-    jmp main_func
+main_loop:                  ; Does menu stuff. Launches into the actual game.
+
+    ; Do main menu stuff here.
+
+; Runs the game. Calls tick() at set intervals until a game over setate is reached.
+game_loop:                  
+    ; TODO: Call tick()
+    ; TODO: Wait for next tick
+    ; TODO: If game is over, break out of game loop
+
+    jmp main_func           ; Jump back to the main function
 
     ; Data file. It sits in memory after the code, before the font.
     include "data.asm"
 
     ; This is our font file. Include it last. It maps to memory location 7168
     include "font.asm"
+

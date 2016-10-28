@@ -15,3 +15,7 @@ CUSTOM_PTR = $FF          ; This points us to 7168 ($1c00) for our char map.
 LCG_MULT = 33             ; Multiplier for LCG
 LCG_CONST = 1             ; Addition constant for LCG
 LCG_SEED = 32000          ; Initial seed value for the LCG (Should be 16 bits)
+
+; ************* Assembler Macros ****************
+
+; Put any macros here.
