@@ -7,17 +7,6 @@
 ; A function to update the drawn score is also included.
 ;
 
-; **************** Program Constants ***********************
-CLRSCN  = $e55f           ; clear screen kernel method
-RDTIM = $FFDE             ; Read Clock Kernel Method
-CHAR_PTR = $9005          ; This address determines where we look for character maps.
-CUSTOM_PTR = $FF          ; This points us to 7168 ($1c00) for our char map.
-BACKGROUND_COLOR = $900f  ; Used to make things pretty
-SCREEN_RAM = $1E00        ; This is the location of screen RAM.
-SCREEN_COLOR_RAM = $9600  ; The colors of chars on the screen.
-
-; **************** Assembly Code ***************************
-
 ;
 ; Prints "SCORE: " string for player(s)
 ;
