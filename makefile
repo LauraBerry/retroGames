@@ -13,7 +13,7 @@ OUT_NAME=pompeii2
 ASM=dasm
 
 all:
-	$(ASM) $(IN_NAME).asm -v3 -o$(OUT_NAME).prg # -l$(IN_NAME).lst -s$(IN_NAME).sym
+	$(ASM) $(IN_NAME).asm -v2 -o$(OUT_NAME).prg # -l$(IN_NAME).lst -s$(IN_NAME).sym
 
 clean:
 	rm -f $(OUT_NAME).prg $(OUT_NAME).lst $(OUT_NAME).sym
