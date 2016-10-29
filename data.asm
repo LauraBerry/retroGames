@@ -25,10 +25,17 @@ global_example_state:
 main_next_tick:
     byte 0
 
+lava_next_generation: ; The number of ticks until we generate a new lava pattern. Init to zero so we instantly generate it.
+    byte 0
 lava_lcg_data: ; Random number stored here. Initialize to the high and low seed bytes.
     byte >LAVA_LCG_SEED,<LAVA_LCG_SEED
 lava_lcg_tmp_data:
     byte 0,0 ; Used for intermediate computation
+lava_lcg_reg_store:
+    byte 0
+lava_threshold: ; If generated random bytes are >= this value, the tile is lava.
+    byte 128
+
 color_colorState: ;Number used to tell what state (safe, warning, danger) the game is in.
 	byte 0			;0==black, 2== yellow, 3== red
 

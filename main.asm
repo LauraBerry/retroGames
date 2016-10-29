@@ -30,6 +30,11 @@ main_basicEnd:
     LDA #MAIN_CUSTOM_PTR         ; Grab the code for our custom charmap.
     STA MAIN_CHAR_PTR            ; This is where the machine determines our char map.
 
+    ; Set up the screen
+    JSR CLRSCN                   ; Clear the screen (Using kernal method. May need to change.)
+    LDA #24                      ; Background/border color. White on black.
+    STA BACKGROUND_COLOR
+
 
 main_loop:                  ; Does menu stuff. Launches into the actual game.
     ; Do main menu stuff here.
@@ -58,10 +63,11 @@ main_game_wait_loop:
 
 ; This is the tick function. This is called to update our game every frame.
 main_tick:                  ; Tick function for the main game loop.
-    LDA BACKGROUND_COLOR    ; Get the background color
-    ADC #1                  ; Add 1 to it.
-    STA BACKGROUND_COLOR    ; Store it back.
+    JSR lava_generate_sched ; If we need to, generate lava.
     RTS
+
+    ; Game logic files. The order of these shouldn't matter.
+    include "lava.asm"
 
     ; Data file. It sits in memory after the code, before the font.
     include "data.asm"
