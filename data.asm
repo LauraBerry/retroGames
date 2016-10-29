@@ -14,7 +14,6 @@
 ZERO_X = $F1              ; The player's current x location 
 ZERO_Y = $F2              ; The player's current y location 
 
-
 ; ************* Global Game State Variables ***************
 
 ; Any game state vars that are not in zero page go here.
@@ -23,8 +22,11 @@ global_example_state:
 
 ; ************* Local Variables - General Memory ***************
 ; Define local variables in here.
+main_next_tick:
+    byte 0
+
 lava_lcg_data: ; Random number stored here. Initialize to the high and low seed bytes.
-    byte >LCG_SEED,<LCG_SEED
+    byte >LAVA_LCG_SEED,<LAVA_LCG_SEED
 lava_lcg_tmp_data:
     byte 0,0 ; Used for intermediate computation
 color_colorState: ;Number used to tell what state (safe, warning, danger) the game is in.

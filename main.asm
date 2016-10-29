@@ -27,20 +27,41 @@ main_basicEnd:
 ; ************* Assembly Code ***************
     ; ==THIS SETS UP THE FONT==
     ; Point us to our new character map. Must have included the font at the end.
-    LDA #CUSTOM_PTR         ; Grab the code for our custom charmap.
-    STA CHAR_PTR            ; This is where the machine determines our char map.
+    LDA #MAIN_CUSTOM_PTR         ; Grab the code for our custom charmap.
+    STA MAIN_CHAR_PTR            ; This is where the machine determines our char map.
+
 
 main_loop:                  ; Does menu stuff. Launches into the actual game.
-
     ; Do main menu stuff here.
 
 ; Runs the game. Calls tick() at set intervals until a game over setate is reached.
-game_loop:                  
-    ; TODO: Call tick()
-    ; TODO: Wait for next tick
+main_game_loop:                  
+    ; Calculate our next tick value.
+    LDA MAIN_CLK                ; Grab our current time.
+    ADC #MAIN_TICKRATE          ; Add to it to get the time we'll execute our next tick.
+    STA main_next_tick          ; Store it to memory.
+
+    JSR main_tick
+
+main_game_wait_loop:
+    LDA MAIN_CLK                ; Grab our current time.
+    CMP main_next_tick          ; Check the time against our stored value
+    BNE main_game_wait_loop
+
     ; TODO: If game is over, break out of game loop
 
-    jmp main_func           ; Jump back to the main function
+    JMP main_game_loop
+
+    ; TODO: Game over stuff happens here.
+
+    JMP main_loop           ; Always jump back to main function (title screen) at game over.
+
+; This is the tick function. This is called to update our game every frame.
+main_tick:                  ; Tick function for the main game loop.
+    LDA BACKGROUND_COLOR    ; Get the background color
+    ADC #1                  ; Add 1 to it.
+    STA BACKGROUND_COLOR    ; Store it back.
+    RTS
 
     ; Data file. It sits in memory after the code, before the font.
     include "data.asm"
