@@ -1,4 +1,10 @@
-
+;
+; Pompeii II
+; wait3
+; (C) 2016 by Konrad Aust, Laura Berry, Andrew Lata, Yue Chen
+; 
+; this program waits 3 seconds and updates the lavaState variable
+;
 
 wait3:
 	LDA wait3_lcg_currTicks			;load current amount of ticks left into A
