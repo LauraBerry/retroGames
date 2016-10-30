@@ -9,8 +9,32 @@
 
     org 6168              ; This is where our data section starts. This can be changed.
 
-; ************* Game State Variables - Zero Page Memory ***************
-; These are technically assembler macros.
+; ************* Assembler Macro Constants ****************
+CLRSCN  = $e55f                ; clear screen kernel method
+BACKGROUND_COLOR = $900f       ; Register that stores the border color for the VIC.
+SCREEN_RAM = $1E00             ; This is the location of screen memory
+SCREEN_COLOR_RAM = $9600       ; The location of screen color memory.
+
+MAIN_CHAR_PTR = $9005          ; This address determines where we look for character maps.
+MAIN_CUSTOM_PTR = $FF          ; This points us to 7168 ($1c00) for our char map.
+
+; Clock/timing stuff
+MAIN_CLK = $A2                 ; Points to the memory map of the hardware clock. We probably only need the lowest order byte.
+MAIN_TICKRATE = 4              ; Tick is called every MAIN_TICKRATE jiffies.
+
+; Lava Stuff.
+LAVA_INTERVAL = 20             ; A new lava pattern is generated every LAVA_INTERVAL ticks
+LAVA_LCG_MULT = 33             ; Multiplier for LCG
+LAVA_LCG_CONST = 1             ; Addition constant for LCG
+LAVA_LCG_SEED = 32000          ; Initial seed value for the LCG (Should be 16 bits)
+LAVA_DANGER_CHAR = 27          ; Character 27 is a lava tile.
+LAVA_SAFE_CHAR = 32            ; Character 32 is a space.
+LAVA_COLOR = 2                 ; Lava is red
+LAVA_START_OFFSET = 22         ; Generate lava at this offset so we have room on top for the player's score
+LAVA_SCREEN_OFFSET = LAVA_START_OFFSET + $100 ; Used for generating lava on the latter half of the screen.
+LAVA_SCREEN2_SIZE = $e4
+
+; Zero page stuff
 ZERO_X = $F1              ; The player's current x location 
 ZERO_Y = $F2              ; The player's current y location 
 
