@@ -19,7 +19,11 @@ ZERO_Y = $F2              ; The player's current y location
 ; Any game state vars that are not in zero page go here.
 global_example_state:
     byte 0
-
+global_lavaState:		;value used to decide if the game is in safe, warning or dangerous mode
+	byte 0				;0==Safe(color =black), 2== warning(color = yellow), 3== dangerous(color= red)
+global_gameState:		;value used to decide if game is in a new game, game running or game over state
+	byte 0				;0=game running, 1= new game, 2 = game over
+	
 ; ************* Local Variables - General Memory ***************
 ; Define local variables in here.
 main_next_tick:
@@ -45,10 +49,7 @@ score_str:              ; String: "SCORE: \0"
 score_p1_digits:        ; The number of hundreds, tens, and ones in the player's score.
     byte 1,2,3
 
-; Color Stuff
-color_colorState: ;Number used to tell what state (safe, warning, danger) the game is in.
-	byte 0			;0==black, 2== yellow, 3== red
-
-color_colorValue:	;Number storing the value of the color for the lava tiles
-	byte 0			;0== black, 7== yellow, 2== red
+; Color Stuff	
+colorChoser_lcg_colorValue:		;Number storing the value of the color for the lava tiles
+	byte 0						;0== black, 7== yellow, 2== red
 
