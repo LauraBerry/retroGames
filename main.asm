@@ -2,7 +2,7 @@
 ; Pompeii II
 ; Main Program
 ; (C) 2016 by Konrad Aust, Laura Berry, Andrew Lata, Yue Chen
-; 
+;
 ; This is the main entrypoint for the program.
 ; Provides the BASIC stub, loads the font, and includes the other files.
 ;
@@ -14,7 +14,7 @@
     processor 6502
     org 4097                ; start of program area
 
-main_basicStub: 
+main_basicStub:
     dc.w main_basicEnd      ; 4 byte pointer to next line of basic
     dc.w 2013               ; 4 byte (can be any number for the most part)
     hex 9e                  ; 1 byte Basic token for SYS
@@ -32,7 +32,7 @@ main_basicEnd:
 
     ; Set up the screen
     JSR CLRSCN                   ; Clear the screen (Using kernal method. May need to change.)
-    LDA #24                      ; Background/border color. White on black.
+    LDA #12                      ; Background/border color. White on black.
     STA BACKGROUND_COLOR
 
 
@@ -41,7 +41,7 @@ main_loop:                  ; Does menu stuff. Launches into the actual game.
 
     JSR score_init
 ; Runs the game. Calls tick() at set intervals until a game over setate is reached.
-main_game_loop:                  
+main_game_loop:
     ; Calculate our next tick value.
     LDA MAIN_CLK                ; Grab our current time.
     ADC #MAIN_TICKRATE          ; Add to it to get the time we'll execute our next tick.
@@ -64,7 +64,6 @@ main_game_wait_loop:
 
 ; This is the tick function. This is called to update our game every frame.
 main_tick:                  ; Tick function for the main game loop.
-    JSR lava_generate_sched ; If we need to, generate lava.
     JSR phase_sched         ; If need be, change the lava's phase (Safe, Warning, Danger)
     JSR score_update
     RTS

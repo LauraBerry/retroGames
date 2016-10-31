@@ -16,7 +16,7 @@ score_init:
 score_print:
     LDA score_str,X         ; Location of SCORE string.
     STA SCREEN_RAM,X        ; Print that char to the screen
-    LDA #$0                 ; Color Black
+    LDA #$1                 ; Color Black
     STA SCREEN_COLOR_RAM,X  ; Set the color
     DEX                     ; Decrement Loop Counter
     BPL score_print         ; Iterate!
@@ -40,7 +40,7 @@ score_print_digits:
     STA SCREEN_RAM+$7,X         ; Print to Screen
 
     ; TODO: Might not need to set color every time we do this.
-    LDA #$0                     ; Color Black
+    LDA #$1                     ; Color Black
     STA SCREEN_COLOR_RAM+$7,X   ; Set the color
 
     DEX                         ; Loop Decrement

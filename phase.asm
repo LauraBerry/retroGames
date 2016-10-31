@@ -27,6 +27,7 @@ phase_change:
     BNE phase_change_updateColor
     LDA #0
     STA global_lavaState
+    JSR lava_generate           ; Otherwise, generate the lava.
 
     ; Change the lava color
 phase_change_updateColor:

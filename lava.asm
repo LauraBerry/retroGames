@@ -12,6 +12,7 @@
 ;
 ; A function called every tick.
 ; Schedules when we're going to draw the next lava pattern.
+; TODO: Remove this. Lava generation should be scheduled for phase changes.
 ;
 lava_generate_sched:
     LDA lava_next_generation    ; Load our countdown
