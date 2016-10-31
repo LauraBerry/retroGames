@@ -65,12 +65,14 @@ main_game_wait_loop:
 ; This is the tick function. This is called to update our game every frame.
 main_tick:                  ; Tick function for the main game loop.
     JSR lava_generate_sched ; If we need to, generate lava.
+    JSR phase_sched         ; If need be, change the lava's phase (Safe, Warning, Danger)
     JSR score_update
     RTS
 
     ; Game logic files. The order of these shouldn't matter.
     include "lava.asm"
     include "score.asm"
+    include "phase.asm"
 
     ; Data file. It sits in memory after the code, before the font.
     include "data.asm"

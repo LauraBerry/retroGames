@@ -32,6 +32,8 @@ LAVA_START_OFFSET = 22         ; Generate lava at this offset so we have room on
 LAVA_SCREEN_OFFSET = LAVA_START_OFFSET + $100 ; Used for generating lava on the latter half of the screen.
 LAVA_SCREEN2_SIZE = $e4
 
+; Phase Stuff
+PHASE_INTERVAL = 20             ; A new lava pattern is generated every LAVA_INTERVAL ticks
 
 ; ************* Assembler Macros ****************
 

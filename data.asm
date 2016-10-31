@@ -17,10 +17,8 @@ ZERO_Y = $F2              ; The player's current y location
 ; ************* Global Game State Variables ***************
 
 ; Any game state vars that are not in zero page go here.
-global_example_state:
-    byte 0
 global_lavaState:		;value used to decide if the game is in safe, warning or dangerous mode
-	byte 0				;0==Safe(color =black), 2== warning(color = yellow), 3== dangerous(color= red)
+	byte 2				;0==Safe(color =black), 1== warning(color = yellow), 2== dangerous(color= red). Start in danger because we pre-increment.
 global_gameState:		;value used to decide if game is in a new game, game running or game over state
 	byte 0				;0=game running, 1= new game, 2 = game over
 	
@@ -53,3 +51,8 @@ score_p1_digits:        ; The number of hundreds, tens, and ones in the player's
 colorChoser_lcg_colorValue:		;Number storing the value of the color for the lava tiles
 	byte 0						;0== black, 7== yellow, 2== red
 
+; Phase Stuff
+phase_change_countdown:
+    byte 0                      ; Number of ticks until the phase of the game changes
+phase_lavaColors:
+    byte 0,7,2                  ; Color values for lava when it's in safe, warning, danger
