@@ -4,57 +4,36 @@
 ; Schedules when we change the lava phase
 ;
 phase_sched:
-    LDA phase_change_countdown    ; Load our countdown
+    LDA phase_change_countdown      ; Load our countdown
     BNE phase_sched_end             ; If we're not scheduled to change phase, decrement and return.
 
-    JSR phase_change           ; Otherwise, Change the phase
-    LDA #PHASE_INTERVAL          ; Grab our phase change
-    STA phase_change_countdown    ; Set it as our new countdown
+    JSR phase_change                ; Otherwise, Change the phase
+    LDA #PHASE_INTERVAL             ; Grab our phase change
+    STA phase_change_countdown      ; Set it as our new countdown
 
 phase_sched_end:
-    DEC phase_change_countdown    ; Decrement our countdown to the next phase change
+    DEC phase_change_countdown      ; Decrement our countdown to the next phase change
     RTS
 
 ;
 ; Checks what the current state is, changes accordingly.
 ;
 phase_change:						
-    ; Increment the lava state.
-    INC global_lavaState
+    INC global_lavaState            ; Increment the lava state.
 
-
-    ; If the lava state is 
+    ; If the lava state is > 2, set it to zero.
     LDA global_lavaState
     CMP #3
-    BNE next
+    BNE phase_change_updateColor
     LDA #0
     STA global_lavaState
-next:
-
-;	LDA global_lavaState			
-;	cmp #00							;check if lava state is 0 (safe state, screen is black)
-;	BNE phase_change_warningState
-;	LDA #01							;set lava state to 1 (warning state, screen has yellow)
-;	STA global_lavaState
-;	jmp wait3_return
-;phase_change_warningState:       
-;	LDA global_lavaState
-;	CMP #01							;check if lava state is 1 (warning state, screen has yellow)
-;	BNE phase_change_deadlyState
-;	LDA #02							;set lava state to 2 (deadly state, screen has red on it)
-;	STA global_lavaState
-;	jmp wait3_return
-;phase_change_deadlyState:
-;	LDA #00							;set lava state to 0 (safe state, screen is black)
-;	JMP wait3_return
-;
-;wait3_return:
 
     ; Change the lava color
-    LDX global_lavaState
-    LDY phase_lavaColors,X
-    JSR phase_change_lava_color
-	RTS								;return statement
+phase_change_updateColor:
+    LDX global_lavaState            ; Load the lava's state into X
+    LDY phase_lavaColors,X          ; Get the color value for this state by indexing into a color array
+    JSR phase_change_lava_color     ; Call the color change function, with the color in register Y.
+	RTS
 
 ;
 ; Change the color of each lava tile.
@@ -62,7 +41,7 @@ next:
 ;
 phase_change_lava_color:
     LDX #0                              ; Loop Index
-phase_change_lava_color_loop:              ; This loop fills each character with lava (or not lava)
+phase_change_lava_color_loop:           ; This loop fills each character with lava (or not lava)
     ; First half of the screen.
     TYA
     STA SCREEN_COLOR_RAM+LAVA_START_OFFSET,X
@@ -76,6 +55,6 @@ phase_change_lava_color_loop:              ; This loop fills each character with
 
 change_lava_color_genLoop_end:          ; Looping things.
     INX                                 ; Decrement Loop Counter
-    BNE phase_change_lava_color_loop       ; Iterate!
+    BNE phase_change_lava_color_loop    ; Iterate!
     RTS
 
