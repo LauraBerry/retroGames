@@ -48,7 +48,6 @@ lava_genLoop_writeTile1:
     LDA #LAVA_COLOR
     STA SCREEN_COLOR_RAM+LAVA_START_OFFSET,X
 
-
     ; This does stuff for the second half of the screen.
     TXA                                 ; Transfer loop counter to A for compare
     CMP #LAVA_SCREEN2_SIZE              ; Because we have this many characters in the latter half of the screen.

@@ -32,5 +32,25 @@ colorChoser_dangerZone:
 	LDA #00
 	STA global_lavaState						;re-set lava state to safe mode
 	RTS
-; Data file. It sits in memory after the code, before the font.
-    include "data.asm"
+
+; Change the color of each lava tile.
+; Register Y contains the color we're writing
+change_lava_color:
+    LDX #0                              ; Loop Index
+change_lava_color_genLoop:              ; This loop fills each character with lava (or not lava)
+    ; First half of the screen.
+    TYA
+    STA SCREEN_COLOR_RAM+LAVA_START_OFFSET,X
+
+    ; This does stuff for the second half of the screen.
+    TXA                                 ; Transfer loop counter to A for compare
+    CMP #LAVA_SCREEN2_SIZE              ; Because we have this many characters in the latter half of the screen.
+    BCS change_lava_color_genLoop_end   ; So if we've already written that many, don't outstep the screen buffer.
+    TYA
+    STA SCREEN_COLOR_RAM+LAVA_SCREEN_OFFSET,X
+
+change_lava_color_genLoop_end:          ; Looping things.
+    INX                                 ; Decrement Loop Counter
+    BNE change_lava_color_genLoop       ; Iterate!
+    RTS
+
