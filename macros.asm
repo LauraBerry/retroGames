@@ -18,10 +18,10 @@ MAIN_CUSTOM_PTR = $FF          ; This points us to 7168 ($1c00) for our char map
 
 ; Clock/timing stuff
 MAIN_CLK = $A2                 ; Points to the memory map of the hardware clock. We probably only need the lowest order byte.
-MAIN_TICKRATE = 4              ; Tick is called every MAIN_TICKRATE jiffies.
+MAIN_TICKRATE = 2              ; Tick is called every MAIN_TICKRATE jiffies.
 
 ; Lava Stuff.
-LAVA_INTERVAL = 20             ; A new lava pattern is generated every LAVA_INTERVAL ticks
+LAVA_INTERVAL = 40             ; A new lava pattern is generated every LAVA_INTERVAL ticks
 LAVA_LCG_MULT = 33             ; Multiplier for LCG
 LAVA_LCG_CONST = 1             ; Addition constant for LCG
 LAVA_LCG_SEED = 32000          ; Initial seed value for the LCG (Should be 16 bits)
