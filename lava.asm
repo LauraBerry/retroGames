@@ -12,18 +12,20 @@
 ;
 ; A function called every tick.
 ; Schedules when we're going to draw the next lava pattern.
-; TODO: Remove this. Lava generation should be scheduled for phase changes.
+; This scheduler doesn't reset the counter after we've run the function.
 ;
 lava_generate_sched:
     LDA lava_next_generation    ; Load our countdown
     BNE lava_generate_sched_end ; If we're not scheduled to generate lava, decrement and return.
 
     JSR lava_generate           ; Otherwise, generate the lava.
-    LDA #LAVA_INTERVAL          ; Grab our lava generation interval
-    STA lava_next_generation    ; Set it as our new countdown
+    ; Do not reset the countdown. The countdown is set by phase.asm when we go to the safe phase.
+
+    ;LDA #LAVA_INTERVAL          ; Grab our lava generation interval
+    ;STA lava_next_generation    ; Set it as our new countdown
 
 lava_generate_sched_end:
-    DEC lava_next_generation    ; Decrement our countdown to the next generation of lava.
+    DEC lava_next_generation    ; Decrement our countdown.
     RTS
 
 ;

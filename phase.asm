@@ -34,7 +34,9 @@ phase_change:
     BNE phase_change_updateColor
     LDA #0
     STA global_lavaState
-    JSR lava_generate           ; Otherwise, generate the lava.
+
+    LDA #1                          ; Schedule lava generation for next tick.
+    STA lava_next_generation        ; We do this because we don't want to clear the screen and generate lava at the same time. Looks weird.
 
     ; Change the lava color
 phase_change_updateColor:
