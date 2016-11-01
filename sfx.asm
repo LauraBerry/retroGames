@@ -14,7 +14,7 @@ sfx_squelch:			; This quiets any possible sound
     STY SFX_NOISE
     RTS
 
-sfx_rumble:			; This is used to handle the audio queue the accompanies a warning state
+sfx_rumble:			; This is used to handle the audio queue that accompanies a warning state
     LDY #SFX_RUMBLE		; Load the rumble tone
     STY SFX_NOISE		; Store tone in the Noise speaker register
 
