@@ -75,5 +75,4 @@ score_getDig_tens:
 
 score_getDig_ones:
     STA score_p1_digits+2   ; The remainder is our ones place.
-    INC score_p1            ; Update the score every tick. TODO: Remove this obviously.
     RTS                     ; We're done. Return to caller.

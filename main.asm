@@ -47,7 +47,7 @@ main_game_loop:
     ADC #MAIN_TICKRATE          ; Add to it to get the time we'll execute our next tick.
     STA main_next_tick          ; Store it to memory.
 
-    JSR main_tick
+    JSR main_tick               ; Call tick()
 
 main_game_wait_loop:
     LDA MAIN_CLK                ; Grab our current time.
@@ -65,20 +65,22 @@ main_game_wait_loop:
 ; This is the tick function. This is called to update our game every frame.
 main_tick:                  ; Tick function for the main game loop.
     JSR phase_sched         ; If need be, change the lava's phase (Safe, Warning, Danger)
-    JSR score_update
+    JSR player_sched        ; Player Movement
+
+    JSR score_update        ; TODO: Remove this. We should only update when the score changes.
+    INC score_p1            ; Test by updating the score every tick. TODO: Remove this obviously.
+
     RTS
 
     ; Game logic files. The order of these shouldn't matter.
     include "lava.asm"
     include "score.asm"
     include "phase.asm"
+    include "player.asm"
+    include "sfx.asm"
 
     ; Data file. It sits in memory after the code, before the font.
     include "data.asm"
 
     ; This is our font file. Include it last. It maps to memory location 7168
     include "font.asm"
-
-    ; Sound effects data and operations will be executed here
-    include "sfx.asm"
-

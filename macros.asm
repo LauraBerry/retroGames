@@ -35,6 +35,9 @@ LAVA_SCREEN2_SIZE = $e4
 ; Phase Stuff
 PHASE_INTERVAL = 20             ; A new lava pattern is generated every LAVA_INTERVAL ticks
 
+; Player Stuff
+PLAYER_MOVE_INTERVAL = 2        ; The player is allowed to move with this many ticks in delay
+
 ; SFX Stuff
 SFX_RUMBLE = $93		; A low D tone for the noise speaker for the warning state (May not work, consider using $91)
 SFX_QUIET = 0			; A constanct used for quieting any speaker making noise

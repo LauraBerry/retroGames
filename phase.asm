@@ -1,3 +1,10 @@
+;
+; Pompeii II
+; Lava Phase Manager
+; (C) 2016 by Konrad Aust, Laura Berry, Andrew Lata, Yue Chen
+; 
+; Keeps track of the lava's state
+;
 
 ;
 ; A function called every tick.
