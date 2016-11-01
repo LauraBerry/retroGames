@@ -35,6 +35,13 @@ LAVA_SCREEN2_SIZE = $e4
 ; Phase Stuff
 PHASE_INTERVAL = 20             ; A new lava pattern is generated every LAVA_INTERVAL ticks
 
+; SFX Stuff
+SFX_RUMBLE = $93		; A low D tone for the noise speaker for the warning state (May not work, consider using $91)
+SFX_SQUELCH = 0			; A constanct used for quieting any speaker making noise
+SFX_LOWSOUND = $900A		; The low sound register
+SFX_MIDSOUND = $900B		; The mid sound register
+SFX_NOISE = $900D		; The noise sound register
+
 ; ************* Assembler Macros ****************
 
 ; Put any macros here.

@@ -79,3 +79,6 @@ main_tick:                  ; Tick function for the main game loop.
     ; This is our font file. Include it last. It maps to memory location 7168
     include "font.asm"
 
+    ; Sound effects data and operations will be executed here
+    include "sfx.asm"
+
