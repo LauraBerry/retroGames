@@ -7,6 +7,7 @@ phase_sched:
     LDA phase_change_countdown      ; Load our countdown
     BNE phase_sched_end             ; If we're not scheduled to change phase, decrement and return.
 
+    JSR sfx_rumble                  ; Call function for checking game state and rumbling if appropriate
     JSR phase_change                ; Otherwise, Change the phase
     LDA #PHASE_INTERVAL             ; Grab our phase change
     STA phase_change_countdown      ; Set it as our new countdown
