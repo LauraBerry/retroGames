@@ -18,7 +18,7 @@ sfx_rumble:			; This is used to handle the audio queue that accompanies a warnin
     LDY #SFX_RUMBLE		; Load the rumble tone
     STY SFX_NOISE		; Store tone in the Noise speaker register
 
-    LDA sfx_warningCount	; Load the rubble countdown
+    LDX sfx_warningCount	; Load the rubble countdown
     BNE sfx_rumbleEnd		; If the rumble continues, decrement and return
 
     LDX #SFX_INTERVAL		; Load a fresh counter value
