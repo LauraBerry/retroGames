@@ -56,3 +56,7 @@ phase_change_countdown:
     byte 0                      ; Number of ticks until the phase of the game changes
 phase_lavaColors:
     byte 0,7,2                  ; Color values for lava when it's in safe, warning, danger
+
+; SFX Stuff
+sfx_warningCount:
+    byte 0			; (Might be redundant) Used for counting the ticks of a warning state

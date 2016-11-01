@@ -41,6 +41,7 @@ SFX_SQUELCH = 0			; A constanct used for quieting any speaker making noise
 SFX_LOWSOUND = $900A		; The low sound register
 SFX_MIDSOUND = $900B		; The mid sound register
 SFX_NOISE = $900D		; The noise sound register
+SFX_INTERVAL = 20		; (might be redundant) The runble noise only lasts for SFX_INTERVAL ticks
 
 ; ************* Assembler Macros ****************
 

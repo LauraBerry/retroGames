@@ -6,6 +6,24 @@
 ; This is where the state of each of the speakers is changed
 ;
 
-; This quiets any possible sound
-sfx_squelch:
 
+sfx_squelch:			; This quiets any possible sound
+    LDY #SFX_QUIET
+    STY SFX_LOWSOUND
+    STY SFX_MIDSOUND
+    STY SFX_NOISE
+    RTS
+
+sfx_rumble:			; This is used to handle the audio queue the accompanies a warning state
+    LDY #SFX_RUMBLE		; Load the rumble tone
+    STY SFX_NOISE		; Store tone in the Noise speaker register
+
+    LDA sfx_warningCount	; Load the rubble countdown
+    BNE sfx_rumbleEnd		; If the rumble continues, decrement and return
+
+    LDX #SFX_INTERVAL		; Load a fresh counter value
+    STX sfx_warningCount	; Reset the counter value
+
+sfx_rumbleEnd:
+    DEC sfx_warningCount	; Decrement the warning counter
+    RTS
