@@ -14,7 +14,6 @@ phase_sched:
     LDA phase_change_countdown      ; Load our countdown
     BNE phase_sched_end             ; If we're not scheduled to change phase, decrement and return.
 
-    JSR sfx_rumble                  ; Call function for checking game state and rumbling if appropriate
     JSR phase_change                ; Otherwise, Change the phase
     LDA #PHASE_INTERVAL             ; Grab our phase change
     STA phase_change_countdown      ; Set it as our new countdown
@@ -44,7 +43,13 @@ phase_change_updateColor:
     LDX global_lavaState            ; Load the lava's state into X
     LDY phase_lavaColors,X          ; Get the color value for this state by indexing into a color array
     JSR phase_change_lava_color     ; Call the color change function, with the color in register Y.
-	RTS
+
+    LDA global_lavaState            ; If we're in the warning state, beep.
+    CMP #1
+    BNE phase_change_end
+    JSR sfx_rumble                  ; Otherwise, Change the phase
+phase_change_end:
+    RTS
 
 ;
 ; Change the color of each lava tile.

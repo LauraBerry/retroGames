@@ -21,7 +21,7 @@ MAIN_CLK = $A2                 ; Points to the memory map of the hardware clock.
 MAIN_TICKRATE = 2              ; Tick is called every MAIN_TICKRATE jiffies.
 
 ; Lava Stuff.
-LAVA_INTERVAL = 40             ; A new lava pattern is generated every LAVA_INTERVAL ticks
+;LAVA_INTERVAL = 40             ; A new lava pattern is generated every LAVA_INTERVAL ticks
 LAVA_LCG_MULT = 33             ; Multiplier for LCG
 LAVA_LCG_CONST = 1             ; Addition constant for LCG
 LAVA_LCG_SEED = 32000          ; Initial seed value for the LCG (Should be 16 bits)
@@ -39,12 +39,13 @@ PHASE_INTERVAL = 20             ; A new lava pattern is generated every LAVA_INT
 PLAYER_MOVE_INTERVAL = 2        ; The player is allowed to move with this many ticks in delay
 
 ; SFX Stuff
-SFX_RUMBLE = $93		; A low D tone for the noise speaker for the warning state (May not work, consider using $91)
+SFX_RUMBLE = 135		; A low C tone for the noise speaker for the warning state
 SFX_QUIET = 0			; A constanct used for quieting any speaker making noise
 SFX_LOWSOUND = $900A		; The low sound register
 SFX_MIDSOUND = $900B		; The mid sound register
 SFX_NOISE = $900D		; The noise sound register
 SFX_INTERVAL = 20		; (might be redundant) The runble noise only lasts for SFX_INTERVAL ticks
+SFX_VOLUME = $900E			; Volume register
 
 ; ************* Assembler Macros ****************
 

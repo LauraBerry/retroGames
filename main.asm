@@ -35,7 +35,7 @@ main_basicEnd:
     LDA #12                      ; Background/border color. White on black.
     STA BACKGROUND_COLOR
 
-
+    JSR sfx_volume		; Turn the volume up
 main_loop:                  ; Does menu stuff. Launches into the actual game.
     ; Do main menu stuff here.
 
@@ -67,6 +67,7 @@ main_tick:                  ; Tick function for the main game loop.
     JSR phase_sched         ; If need be, change the lava's phase (Safe, Warning, Danger)
     JSR player_sched        ; Player Movement
     JSR lava_generate_sched ; Lava Generation
+    JSR sfx_mute_sched      ; Call function for checking game state and rumbling if appropriate
 
     JSR score_update        ; TODO: Remove this. We should only update when the score changes.
     INC score_p1            ; Test by updating the score every tick. TODO: Remove this obviously.
