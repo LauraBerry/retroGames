@@ -11,9 +11,18 @@
 
 ; ************* Game State Variables - Zero Page Memory ***************
 ; These are technically assembler macros.
-ZERO_X = $F1              ; The player's current x location 
-ZERO_Y = $F2              ; The player's current y location 
-
+player_1x:		;player 1 x location
+	byte 1
+player_2x:		;player 2 x location
+	byte 20
+player_1y:		;player 1 y location
+	byte 9
+player_2y:		;player 2 y location
+	byte 9
+player_1offset:	;calculated offset for player 1
+	byte 0
+player_2offset:	;calculated offset for player 2
+	byte 0
 ; ************* Global Game State Variables ***************
 
 ; Any game state vars that are not in zero page go here.
