@@ -229,9 +229,9 @@ player1_print:
 	CLC
 	CMP #0			;see if at SCREEN 0
 	BEQ player1_screen0
-	CMP #$01		;see if at screen 1
+	CMP #01		;see if at screen 1
 	BEQ player1_screen1
-	LDA	#01			;print blank to screen 2
+	LDA	#PLAYER_CHAR		;print blank to screen 2
 	STA SCREEN2,x	;store to SCREEN
 
     ; Write player1's color into the square
@@ -240,7 +240,7 @@ player1_print:
 
 	JMP player_print2
 player1_screen0:	
-	LDA	#01
+	LDA	#PLAYER_CHAR
 	STA SCREEN,x	;save to SCREEN
 
     ; Write player1's color into the square
@@ -249,7 +249,7 @@ player1_screen0:
 
 	JMP player_print2
 player1_screen1:	
-	LDA	#01
+	LDA	#PLAYER_CHAR
 	STA SCREEN1,x	;print to SCREEN
 
     ; Write player1's color into the square
@@ -287,7 +287,7 @@ player2_print:
 	BEQ player2_screen0
 	CMP #$01		;see if at screen 1
 	BEQ player2_screen1
-	LDA	#02			;print to screen 2
+	LDA	#PLAYER_CHAR		;print to screen 2
 	STA SCREEN2,x	;store to SCREEN
 
     ; Write color into the square
@@ -296,7 +296,7 @@ player2_print:
 
 	RTS
 player2_screen0:	
-	LDA	#02
+	LDA	#PLAYER_CHAR
 	STA SCREEN,x	;save to SCREEN
 
     ; Write color into the square
@@ -305,7 +305,7 @@ player2_screen0:
 
 	RTS
 player2_screen1:	
-	LDA	#02
+	LDA	#PLAYER_CHAR
 	STA SCREEN1,x	;print to SCREEN
     ; Write color into the square
     LDA player_2color

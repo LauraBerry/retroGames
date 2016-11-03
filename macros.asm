@@ -37,12 +37,14 @@ PHASE_INTERVAL = 20             ; A new lava pattern is generated every LAVA_INT
 
 ; Player Stuff
 PLAYER_MOVE_INTERVAL = 2        ; The player is allowed to move with this many ticks in delay
+PLAYER_CHAR = $3c               ; Character code of player.
 KEYBOARDBUFFER = #$0277		;keyboard buffer
 KEYPRESS = #$00C5	;read from here to get key press
 KEYBUFFERCOUNTER = #$00C6	;keyboard buffer counter
 SCREEN = #$1E00	;start of SCREEN memory		7680
 SCREEN1 = #$1EB0	;start of second part of SCREEN memory		7856
 SCREEN2 = #$1F60	;start of third part of SCREEN memory		8032
+
 ; SFX Stuff
 SFX_RUMBLE = 135		; A low C tone for the noise speaker for the warning state
 SFX_QUIET = 0			; A constanct used for quieting any speaker making noise
