@@ -47,6 +47,10 @@ lava_genLoop_isLava1:
 lava_genLoop_writeTile1:
     STA SCREEN_RAM+LAVA_START_OFFSET,X  ; Print that char to the screen
 
+    ; All lava is created as black.
+    LDA phase_lavaColors
+    STA SCREEN_COLOR_RAM+LAVA_START_OFFSET,X
+
     ; This does stuff for the second half of the screen.
     TXA                                 ; Transfer loop counter to A for compare
     CMP #LAVA_SCREEN2_SIZE              ; Because we have this many characters in the latter half of the screen.
@@ -61,6 +65,11 @@ lava_genLoop_isLava2:
     LDA #LAVA_DANGER_CHAR               ; Lava tile!
 lava_genLoop_writeTile2:
     STA SCREEN_RAM+LAVA_SCREEN_OFFSET,X ; Print that char to the screen
+
+    ; All lava is created as black.
+    LDA phase_lavaColors
+    STA SCREEN_COLOR_RAM+LAVA_SCREEN_OFFSET,X
+
 
 lava_genLoop_end:                       ; Looping things.
     INX                                 ; Decrement Loop Counter

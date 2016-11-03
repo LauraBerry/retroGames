@@ -60,17 +60,29 @@ phase_change_lava_color:
     LDX #0                              ; Loop Index
 phase_change_lava_color_loop:           ; This loop fills each character with lava (or not lava)
     ; First half of the screen.
-    TYA
+    ; Only recolor lava tiles
+    LDA SCREEN_RAM+LAVA_START_OFFSET,X  ; Load char value
+    CMP #LAVA_DANGER_CHAR               ; Is it a lava tile?
+    BNE phase_clcl_next1                ; If not, skip the color change.
+
+    TYA                                 ; Color is in Y. Store it.
     STA SCREEN_COLOR_RAM+LAVA_START_OFFSET,X
 
+phase_clcl_next1:
     ; This does stuff for the second half of the screen.
     TXA                                 ; Transfer loop counter to A for compare
     CMP #LAVA_SCREEN2_SIZE              ; Because we have this many characters in the latter half of the screen.
-    BCS change_lava_color_genLoop_end   ; So if we've already written that many, don't outstep the screen buffer.
-    TYA
+    BCS phase_clcl_end                  ; So if we've already written that many, don't outstep the screen buffer.
+
+    ; Only recolor lava tiles
+    LDA SCREEN_RAM+LAVA_SCREEN_OFFSET,X ; Load char value
+    CMP #LAVA_DANGER_CHAR               ; Is it a lava tile?
+    BNE phase_clcl_end                  ; If not, skip the color change.
+
+    TYA                                 ; Color is in Y. Store it.
     STA SCREEN_COLOR_RAM+LAVA_SCREEN_OFFSET,X
 
-change_lava_color_genLoop_end:          ; Looping things.
+phase_clcl_end:                         ; Looping things.
     INX                                 ; Decrement Loop Counter
     BNE phase_change_lava_color_loop    ; Iterate!
     RTS
