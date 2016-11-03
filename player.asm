@@ -231,8 +231,17 @@ player1_print:
 	BEQ player1_screen0
 	CMP #01		;see if at screen 1
 	BEQ player1_screen1
-	LDA	#PLAYER_CHAR		;print blank to screen 2
+
+    ; Store the tile the player is stepping on.
+    LDA SCREEN2,x
+    STA player1_underTile
+    
+	LDA	#PLAYER_CHAR
 	STA SCREEN2,x	;store to SCREEN
+
+    ; Store the color of the tile the player is stepping on
+    LDA SCREEN_COLOR_RAM+352,X
+    STA player1_underTile_color
 
     ; Write player1's color into the square
     LDA player_1color
@@ -240,8 +249,17 @@ player1_print:
 
 	JMP player_print2
 player1_screen0:	
+    ; Store the char the player is stepping on.
+    LDA SCREEN,x
+    STA player1_underTile
+
+    ; Write the player's char
 	LDA	#PLAYER_CHAR
 	STA SCREEN,x	;save to SCREEN
+
+    ; Store the color of the tile the player is stepping on
+    LDA SCREEN_COLOR_RAM,X
+    STA player1_underTile_color
 
     ; Write player1's color into the square
     LDA player_1color
@@ -249,8 +267,16 @@ player1_screen0:
 
 	JMP player_print2
 player1_screen1:	
+    ; Store the tile the player is stepping on.
+    LDA SCREEN1,x
+    STA player1_underTile
+
 	LDA	#PLAYER_CHAR
 	STA SCREEN1,x	;print to SCREEN
+
+    ; Store the color of the tile the player is stepping on
+    LDA SCREEN_COLOR_RAM+176,X
+    STA player1_underTile_color
 
     ; Write player1's color into the square
     LDA player_1color
@@ -287,17 +313,33 @@ player2_print:
 	BEQ player2_screen0
 	CMP #$01		;see if at screen 1
 	BEQ player2_screen1
+    ; Store the tile the player is stepping on.
+    LDA SCREEN2,x
+    STA player2_underTile
+
 	LDA	#PLAYER_CHAR		;print to screen 2
 	STA SCREEN2,x	;store to SCREEN
 
-    ; Write color into the square
+    ; Store the color of the tile the player is stepping on
+    LDA SCREEN_COLOR_RAM+352,X
+    STA player2_underTile_color
+
+    ; Write player's color into the square
     LDA player_2color
     STA SCREEN_COLOR_RAM+352,X
 
 	RTS
 player2_screen0:	
+    ; Store the tile the player is stepping on.
+    LDA SCREEN,x
+    STA player2_underTile
+
 	LDA	#PLAYER_CHAR
 	STA SCREEN,x	;save to SCREEN
+
+    ; Store the color of the tile the player is stepping on
+    LDA SCREEN_COLOR_RAM,X
+    STA player2_underTile_color
 
     ; Write color into the square
     LDA player_2color
@@ -305,8 +347,17 @@ player2_screen0:
 
 	RTS
 player2_screen1:	
+    ; Store the tile the player is stepping on.
+    LDA SCREEN1,x
+    STA player2_underTile
+
 	LDA	#PLAYER_CHAR
 	STA SCREEN1,x	;print to SCREEN
+
+    ; Store the color of the tile the player is stepping on
+    LDA SCREEN_COLOR_RAM+176,X
+    STA player2_underTile_color
+
     ; Write color into the square
     LDA player_2color
     STA SCREEN_COLOR_RAM+176,X
@@ -330,16 +381,29 @@ player_clear:
 	BEQ player1_clear0
 	CMP #$01		;see if at screen 1
 	BEQ player1_clear1
-	LDA	#32			;print to screen 2
+	LDA	player1_underTile			;print to screen 2
 	STA SCREEN2,x	;store to SCREEN
+
+    ; Write player1's color into the square
+    LDA player1_underTile_color
+    STA SCREEN_COLOR_RAM+352,X
+
 	JMP player2_clear
 player1_clear0:	
-	LDA	#32
+	LDA	player1_underTile
 	STA SCREEN,x	;save to SCREEN
+
+    ; Write player1's color into the square
+    LDA player1_underTile_color
+    STA SCREEN_COLOR_RAM,X
+
 	JMP player2_clear
 player1_clear1:	
-	LDA	#32
+	LDA	player1_underTile
 	STA SCREEN1,x	;print to SCREEN
+    ; Write player1's color into the square
+    LDA player1_underTile_color
+    STA SCREEN_COLOR_RAM+176,X
 
 player2_clear	
 	LDA player_2y	;load player 2 y location
@@ -354,14 +418,26 @@ player2_clear
 	BEQ player2_clear0
 	CMP #$01		;see if at screen 1
 	BEQ player2_clear1
-	LDA	#32			;print to screen 2
+	LDA	player2_underTile			;print to screen 2
 	STA SCREEN2,x	;store to SCREEN
+
+    ; Write color into the square
+    LDA player2_underTile_color
+    STA SCREEN_COLOR_RAM+352,X
 	RTS
 player2_clear0:	
-	LDA	#32
+	LDA	player2_underTile
 	STA SCREEN,x	;save to SCREEN
+
+    ; Write color into the square
+    LDA player2_underTile_color
+    STA SCREEN_COLOR_RAM,X
 	RTS
 player2_clear1:	
-	LDA	#32
+	LDA	player2_underTile
 	STA SCREEN1,x	;print to SCREEN
+
+    ; Write color into the square
+    LDA player2_underTile_color
+    STA SCREEN_COLOR_RAM+176,X
 	RTS

@@ -57,6 +57,18 @@ phase_change_end:
 ; Register Y contains the color we're writing
 ;
 phase_change_lava_color:
+    ; First, if the players are standing on lava tiles, update their colors.
+    LDA player1_underTile           ; Get the tile P1 is on
+    CMP #LAVA_DANGER_CHAR           ; Compare it to our lava character
+    BNE phase_change_lava_color_p2  ; If they match,
+    STY player1_underTile_color     ; Update the color (new color stored in Y)
+phase_change_lava_color_p2:         ; Do the same for P2.
+    LDA player2_underTile
+    CMP #LAVA_DANGER_CHAR
+    BNE phase_change_lava_color_gameboard
+    STY player2_underTile_color
+phase_change_lava_color_gameboard:  ; End of player's undertile update stuff.
+
     LDX #0                              ; Loop Index
 phase_change_lava_color_loop:           ; This loop fills each character with lava (or not lava)
     ; First half of the screen.

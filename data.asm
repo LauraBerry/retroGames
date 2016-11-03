@@ -78,3 +78,11 @@ player_1color:
     byte 5
 player_2color:
     byte 6
+player1_underTile:          ; The tile that is currently 'underneath' player 1
+    byte #LAVA_SAFE_CHAR
+player1_underTile_color:    ; The color of the tile underneath the player
+    byte 0
+player2_underTile:          ; The tile that is currently 'underneath' player 2
+    byte #LAVA_SAFE_CHAR
+player2_underTile_color:    ; The color of the tile underneath the player
+    byte 0
