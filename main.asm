@@ -70,7 +70,6 @@ main_tick:                  ; Tick function for the main game loop.
     JSR sfx_mute_sched      ; Call function for checking game state and rumbling if appropriate
 
     JSR score_update        ; TODO: Remove this. We should only update when the score changes.
-    INC score_p1            ; Test by updating the score every tick. TODO: Remove this obviously.
 
     RTS
 

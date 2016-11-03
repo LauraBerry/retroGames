@@ -11,18 +11,7 @@
 
 ; ************* Game State Variables - Zero Page Memory ***************
 ; These are technically assembler macros.
-player_1x:		;player 1 x location
-	byte 1
-player_2x:		;player 2 x location
-	byte 20
-player_1y:		;player 1 y location
-	byte 9
-player_2y:		;player 2 y location
-	byte 9
-player_1offset:	;calculated offset for player 1
-	byte 0
-player_2offset:	;calculated offset for player 2
-	byte 0
+
 ; ************* Global Game State Variables ***************
 
 ; Any game state vars that are not in zero page go here.
@@ -66,10 +55,26 @@ phase_change_countdown:
 phase_lavaColors:
     byte 0,7,2                  ; Color values for lava when it's in safe, warning, danger
 
-; Player Stuff
-player_move_countdown:
-    byte 0                      ; Number of ticks until the phase of the game changes
-
 ; SFX Stuff
 sfx_warningCount:
     byte 0			; (Might be redundant) Used for counting the ticks of a warning state
+
+; Player Stuff
+player_move_countdown:
+    byte 0                      ; Number of ticks until the phase of the game changes
+player_1x:		;player 1 x location
+	byte 1
+player_2x:		;player 2 x location
+	byte 20
+player_1y:		;player 1 y location
+	byte 9
+player_2y:		;player 2 y location
+	byte 9
+player_1offset:	;calculated offset for player 1
+	byte 0
+player_2offset:	;calculated offset for player 2
+	byte 0
+player_1color:
+    byte 5
+player_2color:
+    byte 6

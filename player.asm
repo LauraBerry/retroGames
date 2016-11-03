@@ -233,14 +233,28 @@ player1_print:
 	BEQ player1_screen1
 	LDA	#01			;print blank to screen 2
 	STA SCREEN2,x	;store to SCREEN
+
+    ; Write player1's color into the square
+    LDA player_1color
+    STA SCREEN_COLOR_RAM+352,X
+
 	JMP player_print2
 player1_screen0:	
 	LDA	#01
 	STA SCREEN,x	;save to SCREEN
+
+    ; Write player1's color into the square
+    LDA player_1color
+    STA SCREEN_COLOR_RAM,X
+
 	JMP player_print2
 player1_screen1:	
 	LDA	#01
 	STA SCREEN1,x	;print to SCREEN
+
+    ; Write player1's color into the square
+    LDA player_1color
+    STA SCREEN_COLOR_RAM+176,X
 
 	
 player_print2:
@@ -275,14 +289,27 @@ player2_print:
 	BEQ player2_screen1
 	LDA	#02			;print to screen 2
 	STA SCREEN2,x	;store to SCREEN
+
+    ; Write color into the square
+    LDA player_2color
+    STA SCREEN_COLOR_RAM+352,X
+
 	RTS
 player2_screen0:	
 	LDA	#02
 	STA SCREEN,x	;save to SCREEN
+
+    ; Write color into the square
+    LDA player_2color
+    STA SCREEN_COLOR_RAM,X
+
 	RTS
 player2_screen1:	
 	LDA	#02
 	STA SCREEN1,x	;print to SCREEN
+    ; Write color into the square
+    LDA player_2color
+    STA SCREEN_COLOR_RAM+176,X
 	RTS
 	
 ;-----clear both character from SCREEN-------------
