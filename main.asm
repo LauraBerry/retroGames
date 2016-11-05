@@ -41,22 +41,27 @@ main_loop:                  ; Does menu stuff. Launches into the actual game.
 
     JSR score_init
 ; Runs the game. Calls tick() at set intervals until a game over setate is reached.
-main_game_loop:
-    ; Calculate our next tick value.
-    LDA MAIN_CLK                ; Grab our current time.
-    ADC #MAIN_TICKRATE          ; Add to it to get the time we'll execute our next tick.
-    STA main_next_tick          ; Store it to memory.
+
+main_game_loop: SUBROUTINE
+    ; Calculate and store the time for our next tick.
+
+    ; Zero out the main clock.
+    LDA #0
+    STA MAIN_CLK
+    STA MAIN_CLK+1
+    STA MAIN_CLK+2
 
     JSR main_tick               ; Call tick()
 
 main_game_wait_loop:
-    LDA MAIN_CLK                ; Grab our current time.
-    CMP main_next_tick          ; Check the time against our stored value
-    BNE main_game_wait_loop
+    LDA MAIN_CLK+2              ; Load the LSB of the main clock
+    CMP #MAIN_TICKRATE          ; If its counted past our tickrate
+    BCS main_game_loop          ; Loop to the next tick
+    JMP main_game_wait_loop     ; Else, wait.
 
     ; TODO: If game is over, break out of game loop
 
-    JMP main_game_loop
+    ;JMP main_game_loop
 
     ; TODO: Game over stuff happens here.
 

@@ -17,7 +17,7 @@ MAIN_CHAR_PTR = $9005          ; This address determines where we look for chara
 MAIN_CUSTOM_PTR = $FF          ; This points us to 7168 ($1c00) for our char map.
 
 ; Clock/timing stuff
-MAIN_CLK = $A2                 ; Points to the memory map of the hardware clock. We probably only need the lowest order byte.
+MAIN_CLK = $A0                 ; Points to the memory map of the hardware clock. A0-A2 is the HW clock.
 MAIN_TICKRATE = 2              ; Tick is called every MAIN_TICKRATE jiffies.
 
 ; Lava Stuff.

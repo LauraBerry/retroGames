@@ -22,8 +22,6 @@ global_gameState:		;value used to decide if game is in a new game, game running 
 	
 ; ************* Local Variables - General Memory ***************
 ; Define local variables in here.
-main_next_tick:
-    byte 0
 
 ; Lava Stuff
 lava_next_generation:   ; The number of ticks until we generate a new lava pattern. Init to zero so we instantly generate it.
