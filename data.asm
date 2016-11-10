@@ -2,7 +2,7 @@
 ; Pompeii II
 ; Data Definition
 ; (C) 2016 by Konrad Aust, Laura Berry, Andrew Lata, Yue Chen
-; 
+;
 ; This is where we keep all the references to variables in our program
 ; This does not include zero page
 ;
@@ -19,7 +19,7 @@ global_lavaState:		;value used to decide if the game is in safe, warning or dang
 	byte 2				;0==Safe(color =black), 1== warning(color = yellow), 2== dangerous(color= red). Start in danger because we pre-increment.
 global_gameState:		;value used to decide if game is in a new game, game running or game over state
 	byte 0				;0=game running, 1= new game, 2 = game over
-	
+
 ; ************* Local Variables - General Memory ***************
 ; Define local variables in here.
 
@@ -43,7 +43,7 @@ score_str:              ; String: "SCORE: \0"
 score_p1_digits:        ; The number of hundreds, tens, and ones in the player's score.
     byte 1,2,3
 
-; Color Stuff	
+; Color Stuff
 colorChoser_lcg_colorValue:		;Number storing the value of the color for the lava tiles
 	byte 0						;0== black, 7== yellow, 2== red
 

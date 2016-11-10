@@ -35,14 +35,14 @@ main_basicEnd:
     LDA #12                      ; Background/border color. White on black.
     STA BACKGROUND_COLOR
 
-    JSR sfx_volume		; Turn the volume up
+    JSR sfx_volume          ; Turn the volume up
 main_loop:                  ; Does menu stuff. Launches into the actual game.
     ; Do main menu stuff here.
 
     JSR score_init
 ; Runs the game. Calls tick() at set intervals until a game over setate is reached.
 
-main_game_loop: SUBROUTINE
+main_game_loop:
     ; Calculate and store the time for our next tick.
 
     ; Zero out the main clock.

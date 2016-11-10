@@ -14,37 +14,33 @@
 ; Schedules when we're going to draw the next lava pattern.
 ; This scheduler doesn't reset the counter after we've run the function.
 ;
-lava_generate_sched:
+lava_generate_sched: SUBROUTINE
     LDA lava_next_generation    ; Load our countdown
-    BNE lava_generate_sched_end ; If we're not scheduled to generate lava, decrement and return.
+    BNE .end                    ; If we're not scheduled to generate lava, decrement and return.
 
     JSR lava_generate           ; Otherwise, generate the lava.
-    ; Do not reset the countdown. The countdown is set by phase.asm when we go to the safe phase.
 
-    ;LDA #LAVA_INTERVAL          ; Grab our lava generation interval
-    ;STA lava_next_generation    ; Set it as our new countdown
-
-lava_generate_sched_end:
+.end:
     DEC lava_next_generation    ; Decrement our countdown.
     RTS
 
 ;
 ; Generates a brand new pattern of lava on the screen using the LCG
 ;
-lava_generate:
+lava_generate: SUBROUTINE
     LDX #0                              ; Loop Index
-lava_genLoop:                           ; This loop fills each character with lava (or not lava)
+.mainLoop:                              ; This loop fills each character with lava (or not lava)
     JSR lava_lcg                        ; Generate the next random number
 
     ; First half of the screen.
     LDA lava_lcg_data                   ; Load the value of the LCG Data
     CMP lava_threshold                  ; Compare the value to the lava threshold
-    BCS lava_genLoop_isLava1            ; If random number >= lava threshold, it's lava.
+    BCS .isLava1                        ; If random number >= lava threshold, it's lava.
     LDA #LAVA_SAFE_CHAR                 ; Else, we're a normal tile
-    JMP lava_genLoop_writeTile1
-lava_genLoop_isLava1:
+    JMP .writeTile1
+.isLava1:
     LDA #LAVA_DANGER_CHAR               ; Lava tile!
-lava_genLoop_writeTile1:
+.writeTile1:
     STA SCREEN_RAM+LAVA_START_OFFSET,X  ; Print that char to the screen
 
     ; All lava is created as black.
@@ -54,16 +50,16 @@ lava_genLoop_writeTile1:
     ; This does stuff for the second half of the screen.
     TXA                                 ; Transfer loop counter to A for compare
     CMP #LAVA_SCREEN2_SIZE              ; Because we have this many characters in the latter half of the screen.
-    BCS lava_genLoop_end                ; So if we've already written that many, don't outstep the screen buffer.
+    BCS .end                            ; So if we've already written that many, don't outstep the screen buffer.
 
     LDA lava_lcg_data+1                 ; Load the second byte of the random number
     CMP lava_threshold                  ; Compare the value to the lava threshold
-    BCS lava_genLoop_isLava2            ; If random number >= lava thresh, it's lava.
+    BCS .isLava2                        ; If random number >= lava thresh, it's lava.
     LDA #LAVA_SAFE_CHAR                 ; Else, we're a normal tile
-    JMP lava_genLoop_writeTile2         ; Run to the end of the screen.
-lava_genLoop_isLava2:
+    JMP .writeTile2                     ; Run to the end of the screen.
+.isLava2:
     LDA #LAVA_DANGER_CHAR               ; Lava tile!
-lava_genLoop_writeTile2:
+.writeTile2:
     STA SCREEN_RAM+LAVA_SCREEN_OFFSET,X ; Print that char to the screen
 
     ; All lava is created as black.
@@ -71,9 +67,9 @@ lava_genLoop_writeTile2:
     STA SCREEN_COLOR_RAM+LAVA_SCREEN_OFFSET,X
 
 
-lava_genLoop_end:                       ; Looping things.
-    INX                                 ; Decrement Loop Counter
-    BNE lava_genLoop                    ; Iterate!
+.end:               ; Looping things.
+    INX             ; Decrement Loop Counter
+    BNE .mainLoop   ; Iterate!
 
     RTS
 
@@ -86,7 +82,7 @@ lava_genLoop_end:                       ; Looping things.
 ;
 ; Preserves X register. Wipes away others.
 :
-lava_lcg:
+lava_lcg: SUBROUTINE
     STX lava_lcg_reg_store  ; Store our X
     LDA lava_lcg_data       ; Save the high byte
     STA lava_lcg_tmp_data   ; (In the temp place)
@@ -96,32 +92,29 @@ lava_lcg:
     ; Multiply by 32 by left shifting.
     CLC                     ; Clean this filth.
     LDX #5                  ; 32 = 2^5. 5 left shifts.
-lava_lcg_shift:             ; Do our shifts through the carry (5 times)
+.shift:             ; Do our shifts through the carry (5 times)
     ROL lava_lcg_data+1     ; Left shift low bits
     ROL lava_lcg_data       ; Left Shift the carry into high bits.
     CLC                     ; Discard the highest bit we shift out.
     DEX                     ; Loop index decrement
-    BPL lava_lcg_shift      ; Loopishness
+    BPL .shift      ; Loopishness
 
     ; To multiply by 33, add the original value again.
     LDA lava_lcg_data+1     ; Get the new low bytes
     ADC lava_lcg_tmp_data+1 ; Add the old low bytes
-    STA lava_lcg_data+1     ; Store the low bytes back
-    BCC lava_lcg_addhigh    ; If there's no carry, proceed to adding high bytes
-    INC lava_lcg_data       ; If there is, increment the high byte first
-lava_lcg_addhigh:
-    LDA lava_lcg_data       ; Get the new high bytes
-    ADC lava_lcg_tmp_data   ; Add the old high bytes
+    STA lava_lcg_data+1     ; Store the low byte back
+    LDA lava_lcg_data       ; Load the high byte
+    ADC lava_lcg_tmp_data   ; Add the old high bytes (also adds the carry bit.)
     STA lava_lcg_data       ; Store the high bytes back
 
     ; Increment the values. If there's overflow, carry it over.
     LDA lava_lcg_data+1     ; Grab the low byte
     ADC #LAVA_LCG_CONST     ; Add c
     STA lava_lcg_data+1     ; Store it back
-    BCC lcg_end             ; If there was no overflow, we're good. Return.
-    INC lava_lcg_data       ; Else, add 1 to the high byte (ignore overflow here)
+    LDA lava_lcg_data       ; Load high byte
+    ADC #0                  ; Add carry to it.
 
-lcg_end:
+    CLC                     ; Clear our carry
     LDX lava_lcg_reg_store  ; Restore our X
     RTS                     ; Return to Sender
 

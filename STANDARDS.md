@@ -12,6 +12,7 @@
  
   * Naming Conventions
     - Code Labels: [filename]\_[functionName]\_[labelName]
+        - Local labels (following a label with SUBROUTINE, prefixed with a .) can have whatever naming convention you like.
     - Data Labels: 
       - For global state: global\_[labelName], zero\_[labelName] (For zero page)
       - For local state: [filename]\_[local]\_[label]
