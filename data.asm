@@ -55,26 +55,26 @@ phase_lavaColors:
 
 ; SFX Stuff
 sfx_warningCount:
-    byte 0			; (Might be redundant) Used for counting the ticks of a warning state
+    byte 0			            ; (Might be redundant) Used for counting the ticks of a warning state
 
 ; Player Stuff
 player_move_countdown:
-    byte 0                      ; Number of ticks until the phase of the game changes
-player_1x:		;player 1 x location
+    byte 0                  ; Number of ticks until the phase of the game changes
+player1_x:		            ; Player 1 x location
 	byte 1
-player_2x:		;player 2 x location
+player2_x:		            ; Player 2 x location
 	byte 20
-player_1y:		;player 1 y location
+player1_y:		            ; Player 1 y location
 	byte 9
-player_2y:		;player 2 y location
+player2_y:		            ; Player 2 y location
 	byte 9
-player_1offset:	;calculated offset for player 1
+player1_offset:	            ; Calculated offset for player 1
 	byte 0
-player_2offset:	;calculated offset for player 2
+player2_offset:	            ; Calculated offset for player 2
 	byte 0
-player_1color:
+player1_color:
     byte 5
-player_2color:
+player2_color:
     byte 6
 player1_underTile:          ; The tile that is currently 'underneath' player 1
     byte #LAVA_SAFE_CHAR

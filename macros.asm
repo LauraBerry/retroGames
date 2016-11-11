@@ -41,9 +41,21 @@ PLAYER_CHAR = $3c               ; Character code of player.
 KEYBOARDBUFFER = #$0277         ; keyboard buffer
 KEYPRESS = #$00C5               ; read from here to get key press
 KEYBUFFERCOUNTER = #$00C6       ; keyboard buffer counter
-SCREEN = #$1E00                 ; start of SCREEN memory 7680
-SCREEN1 = #$1EB0                ; start of second part of SCREEN memory 7856
-SCREEN2 = #$1F60                ; start of third part of SCREEN memory 8032
+SCREEN0 = #SCREEN_RAM            ; start of SCREEN memory 7680
+SCREEN1 = #SCREEN_RAM+176       ; start of second part of SCREEN memory 7856
+SCREEN2 = #SCREEN_RAM+2*(176)   ; start of third part of SCREEN memory 8032
+SCREEN_COLOR0 = #SCREEN_COLOR_RAM
+SCREEN_COLOR1 = #SCREEN_COLOR_RAM+176
+SCREEN_COLOR2 = #SCREEN_COLOR_RAM+2*(176)
+
+P1_KEY_LEFT = 17
+P1_KEY_RIGHT = 18
+P1_KEY_UP = 9
+P1_KEY_DOWN = 41
+P2_KEY_LEFT = 20
+P2_KEY_RIGHT = 21
+P2_KEY_UP = 12
+P2_KEY_DOWN = 44
 
 ; SFX Stuff
 SFX_RUMBLE = 135                ; A low C tone for the noise speaker for the warning state
@@ -56,4 +68,135 @@ SFX_VOLUME = $900E              ; Volume register
 
 ; ************* Assembler Macros ****************
 
-; Put any assembler macros here.
+    ; /////////////////////////////////////////////
+    ; Player position wrapping function.
+    ; Usage: player_wrap <player_num>
+    MAC PLAYER_WRAP
+
+    LDA player{1}_x         ; Test x location
+    CMP #$15                ; Is it overflowing to the right?
+    BNE .checkP{1}XLeft     ; If not, check next.
+
+    LDA #-1                 ; If so, set it to leftmost.
+    STA player{1}_x
+    JMP .checkP{1}YTop      ; And start checking y values for p1.
+.checkP{1}XLeft:
+    CMP #$-2                ; Are we overflowing to the left?
+    BNE .checkP{1}YTop      ; If not, check next.
+    LDA #$14
+    STA player{1}_x         ; And fall through to checking y.
+.checkP{1}YTop:
+    LDA player{1}_y
+    CMP #$0                 ; Are we overflowing up top?
+    BNE .checkP{1}YBot      ; If not, check next
+    LDA #$16                ; If so, set to bottom.
+    STA player{1}_y
+    JMP .checkP{1}End
+.checkP{1}YBot:
+    CMP #$17                ; Are we overflowing on bottom?
+    BNE .checkP{1}End       ; If not, check next
+    LDA #$1                 ; If so, set to bottom.
+    STA player{1}_y         ; And fall through to checking p2.
+.checkP{1}End:
+
+    ENDM
+
+    ; /////////////////////////////////////////////
+    ; Usage: player_print <player_num>
+    ; y offset is moded with 7, and looped through to get the y offset
+    ; The x offset is added to the y offset and store in X
+    ; The y offset is reloaded into the Accumulator and divided by 8 to find the screen offset
+    ; The character is printed to the right screen + offset
+    MAC PLAYER_PRINT
+
+    CLC
+    LDA player{1}_y
+    AND #$07                ; Mod 7
+    TAX                     ; Save to X
+    LDA #00
+.p{1}_printLoop:            ; Loop to calculate the y offset
+    CPX #00                 ; See if send of SCREEN
+    BEQ .p{1}_print         ; Branch out
+    ADC #$15                ; Add one row
+    DEX                     ; Decrement x
+    JMP .p{1}_printLoop
+.p{1}_print:
+    ADC player{1}_x         ; Add x offset
+    TAX                     ; Save to x
+    STX player{1}_offset    ; Save to offset
+    LDA player{1}_y
+    LSR                     ; Divide by 8
+    LSR
+    LSR
+    CMP #0                  ;see if at SCREEN 0
+    BEQ .p{1}_screen0
+    CMP #01                 ;see if at screen 1
+    BEQ .p{1}_screen1
+    PLAYER_PRINT_CHAR {1},2 ; Screen region 2
+    JMP .p{1}_end
+.p{1}_screen0:
+    PLAYER_PRINT_CHAR {1},0 ; Screen region 0
+    JMP .p{1}_end
+.p{1}_screen1:
+    PLAYER_PRINT_CHAR {1},1 ; Screen region 1
+.p{1}_end:
+    ENDM
+
+    ; /////////////////////////////////////////////
+    ; Usage: player_print_char <player_num>,<screen_num>
+    ; Assumes x contains the offset into the screen region.
+    MAC PLAYER_PRINT_CHAR
+
+    LDA SCREEN{2},x             ; Get the tile in the position that we'll put the player.
+    STA player{1}_underTile     ; Save it to the player's underTile variable.
+
+    LDA #PLAYER_CHAR            ; Load the player's sprite.
+    STA SCREEN{2},x             ; Put it on the screen at the offset x.
+
+    ; Store the color of the tile the player is stepping on
+    LDA SCREEN_COLOR{2},X
+    STA player{1}_underTile_color
+
+    ; Write color into the square
+    LDA player{1}_color
+    STA SCREEN_COLOR{2},X
+
+    ENDM
+
+    ; /////////////////////////////////////////////
+    ; Usage: player_clear <player_num>
+    ; Load the y offset into A
+    ; Load calculate offset into x
+    ; Divide A by 8 to get SCREEN number
+    ; Check SCREEN number then print with offset in x
+    MAC PLAYER_CLEAR
+    LDA player{1}_y             ; Load player 1 y location
+    LDX player{1}_offset        ; Load offset
+    LSR                         ; Divide by 8
+    LSR
+    LSR
+    CMP #0                      ; Check which screen region the player is in.
+    BEQ .p{1}_screen0
+    CMP #$01
+    BEQ .p{1}_screen1
+    PLAYER_CLEAR_CHAR {1},2     ; Screen region 2
+    JMP .p{1}_end
+.p{1}_screen0:
+    PLAYER_CLEAR_CHAR {1},0     ; Screen region 0
+    JMP .p{1}_end
+.p{1}_screen1:
+    PLAYER_CLEAR_CHAR {1},1     ; Screen region 1
+.p{1}_end:
+    ENDM
+
+    ; /////////////////////////////////////////////
+    ; Usage: player_clear_char <player_num>,<screen_num>
+    ; Assumes x contains the offset into the screen region.
+    MAC PLAYER_CLEAR_CHAR
+
+    LDA player{1}_underTile         ; Get the tile underneath the player
+    STA SCREEN{2},X                 ; Put it on the screen
+    LDA player{1}_underTile_color   ; Do the same for the color
+    STA SCREEN_COLOR{2},X           ; Put it on the screen.
+
+    ENDM
