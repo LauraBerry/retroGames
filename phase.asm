@@ -41,61 +41,24 @@ phase_change: SUBROUTINE
 
     ; Change the lava color
 .updateColor:
-    LDX global_lavaState            ; Load the lava's state into X
-    LDY phase_lavaColors,X          ; Get the color value for this state by indexing into a color array
-    JSR phase_change_lava_color     ; Call the color change function, with the color in register Y.
+    ; New lava color updating code.
+    LDA #$0F                        ; Load bitmask
+    AND SCREEN_AUX_COLOR            ; Clear the aux color we're using for the screen
+    STA SCREEN_AUX_COLOR
+    
+    LDX global_lavaState            ; Load the lavastate into X
+    LDA phase_lavaColors,X          ; Get the color value for this state by indexing into a color array
+    ASL                             ; Shift into the high bits.
+    ASL
+    ASL
+    ASL
+    ORA SCREEN_AUX_COLOR            ; Store it in the aux color. (Use high bits.)
+    STA SCREEN_AUX_COLOR
 
     LDA global_lavaState            ; If we're in the warning state, beep.
     CMP #1
     BNE .end
     JSR sfx_rumble                  ; Otherwise, Change the phase
 .end:
-    RTS
-
-;
-; Change the color of each lava tile.
-; Register Y contains the color we're writing
-;
-phase_change_lava_color: SUBROUTINE
-    ; First, if the players are standing on lava tiles, update their colors.
-    LDA player1_underTile           ; Get the tile P1 is on
-    CMP #LAVA_DANGER_CHAR           ; Compare it to our lava character
-    BNE .player2                    ; If they match,
-    STY player1_underTile_color     ; Update the color (new color stored in Y)
-.player2:                           ; Do the same for P2.
-    LDA player2_underTile
-    CMP #LAVA_DANGER_CHAR
-    BNE .colorGameboard
-    STY player2_underTile_color
-
-.colorGameboard:                        ; End of player's undertile update stuff.
-    LDX #0                              ; Loop Index
-.loop:                                  ; This loop fills each character with lava (or not lava)
-    ; First half of the screen.
-    ; Only recolor lava tiles
-    LDA SCREEN_RAM+LAVA_START_OFFSET,X  ; Load char value
-    CMP #LAVA_DANGER_CHAR               ; Is it a lava tile?
-    BNE .skip_colorchange               ; If not, skip the color change.
-
-    TYA                                 ; Color is in Y. Store it.
-    STA SCREEN_COLOR_RAM+LAVA_START_OFFSET,X
-
-.skip_colorchange:
-    ; This does stuff for the second half of the screen.
-    TXA                                 ; Transfer loop counter to A for compare
-    CMP #LAVA_SCREEN2_SIZE              ; Because we have this many characters in the latter half of the screen.
-    BCS .end                            ; So if we've already written that many, don't outstep the screen buffer.
-
-    ; Only recolor lava tiles
-    LDA SCREEN_RAM+LAVA_SCREEN_OFFSET,X ; Load char value
-    CMP #LAVA_DANGER_CHAR               ; Is it a lava tile?
-    BNE .end                            ; If not, skip the color change.
-
-    TYA                                 ; Color is in Y. Store it.
-    STA SCREEN_COLOR_RAM+LAVA_SCREEN_OFFSET,X
-
-.end:                                   ; Looping things.
-    INX                                 ; Decrement Loop Counter
-    BNE .loop    ; Iterate!
     RTS
 

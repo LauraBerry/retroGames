@@ -12,6 +12,7 @@ CLRSCN  = $e55f                 ; clear screen kernel method
 BACKGROUND_COLOR = $900f        ; Register that stores the border color for the VIC.
 SCREEN_RAM = $1E00              ; This is the location of screen memory
 SCREEN_COLOR_RAM = $9600        ; The location of screen color memory.
+SCREEN_AUX_COLOR = $900E        ; Aux color. High bits are the color. Low bits are the volume.
 
 MAIN_CHAR_PTR = $9005           ; This address determines where we look for character maps.
 MAIN_CUSTOM_PTR = $FF           ; This points us to 7168 ($1c00) for our char map.
@@ -37,7 +38,8 @@ PHASE_INTERVAL = 50             ; The phase is changed after this number of tick
 
 ; Player Stuff
 PLAYER_MOVE_INTERVAL = 2        ; The player is allowed to move with this many ticks in delay
-PLAYER_CHAR = $3c               ; Character code of player.
+PLAYER_CHAR_SAFE = $3e               ; Character code of player.
+PLAYER_CHAR_DANGER = $3d        ; Character code of player.
 KEYBOARDBUFFER = #$0277         ; keyboard buffer
 KEYPRESS = #$00C5               ; read from here to get key press
 KEYBUFFERCOUNTER = #$00C6       ; keyboard buffer counter
@@ -150,7 +152,13 @@ SFX_VOLUME = $900E              ; Volume register
     LDA SCREEN{2},x             ; Get the tile in the position that we'll put the player.
     STA player{1}_underTile     ; Save it to the player's underTile variable.
 
-    LDA #PLAYER_CHAR            ; Load the player's sprite.
+    CMP #LAVA_DANGER_CHAR
+    BNE .next{1}_{2}
+    LDA #PLAYER_CHAR_DANGER     ; Load the player's sprite.
+    JMP .printChar{1}_{2}
+.next{1}_{2}:
+    LDA #PLAYER_CHAR_SAFE       ; Load the player's sprite.
+.printChar{1}_{2}:
     STA SCREEN{2},x             ; Put it on the screen at the offset x.
 
     ; Store the color of the tile the player is stepping on
@@ -159,6 +167,7 @@ SFX_VOLUME = $900E              ; Volume register
 
     ; Write color into the square
     LDA player{1}_color
+    ORA #8
     STA SCREEN_COLOR{2},X
 
     ENDM

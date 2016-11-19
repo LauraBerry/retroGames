@@ -27,12 +27,12 @@ main_basicEnd:
 ; ************* Assembly Code ***************
     ; ==THIS SETS UP THE FONT==
     ; Point us to our new character map. Must have included the font at the end.
-    LDA #MAIN_CUSTOM_PTR         ; Grab the code for our custom charmap.
-    STA MAIN_CHAR_PTR            ; This is where the machine determines our char map.
+    LDA #MAIN_CUSTOM_PTR    ; Grab the code for our custom charmap.
+    STA MAIN_CHAR_PTR       ; This is where the machine determines our char map.
 
     ; Set up the screen
-    JSR CLRSCN                   ; Clear the screen (Using kernal method. May need to change.)
-    LDA #12                      ; Background/border color. White on black.
+    JSR CLRSCN              ; Clear the screen (Using kernal method. May need to change.)
+    LDA #12                 ; Background/border color. White on black.
     STA BACKGROUND_COLOR
 
     JSR sfx_volume          ; Turn the volume up

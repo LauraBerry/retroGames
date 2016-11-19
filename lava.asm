@@ -43,8 +43,9 @@ lava_generate: SUBROUTINE
 .writeTile1:
     STA SCREEN_RAM+LAVA_START_OFFSET,X  ; Print that char to the screen
 
-    ; All lava is created as black.
+    ; Load up the tile color.
     LDA phase_lavaColors
+    ORA #8 ; Use high color mode
     STA SCREEN_COLOR_RAM+LAVA_START_OFFSET,X
 
     ; This does stuff for the second half of the screen.
@@ -62,8 +63,9 @@ lava_generate: SUBROUTINE
 .writeTile2:
     STA SCREEN_RAM+LAVA_SCREEN_OFFSET,X ; Print that char to the screen
 
-    ; All lava is created as black.
+    ; Load up the tile color
     LDA phase_lavaColors
+    ORA #8 ; Use high color mode
     STA SCREEN_COLOR_RAM+LAVA_SCREEN_OFFSET,X
 
 

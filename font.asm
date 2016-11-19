@@ -556,24 +556,24 @@
 	byte %00111100      ; ..X..X..
 	byte %00100100      ; ..X..X..
 	byte %00100100      ; ..X..X..
-; char $3d
-	byte %10000000
-	byte %01000000
-	byte %00100000
-	byte %00010000
-	byte %00001000
-	byte %00000100
-	byte %00000010
-	byte %00000001
-; char $3e
-	byte %10000000
-	byte %01000000
-	byte %00100000
-	byte %00010000
-	byte %00001000
-	byte %00000100
-	byte %00000010
-	byte %00000001
+; char $3d (Player sprite on dangerous tile)
+	byte %11111111
+	byte %11111111
+	byte %11101011
+	byte %11101011
+	byte %11101011
+	byte %11101011
+	byte %11111111
+	byte %11111111
+; char $3e (Player sprite on safe tile)
+	byte %00000000
+	byte %00000000
+	byte %00101000
+	byte %00101000
+	byte %00101000
+	byte %00101000
+	byte %00000000
+	byte %00000000
 ; char $3f
 	byte %10000000
 	byte %01000000
