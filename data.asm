@@ -73,7 +73,7 @@ player1_offset:	            ; Calculated offset for player 1
 player2_offset:	            ; Calculated offset for player 2
 	byte 0
 player1_color:
-    byte 5
+    byte 4
 player2_color:
     byte 6
 player1_underTile:          ; The tile that is currently 'underneath' player 1

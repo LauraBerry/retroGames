@@ -39,7 +39,7 @@ PHASE_INTERVAL = 50             ; The phase is changed after this number of tick
 ; Player Stuff
 PLAYER_MOVE_INTERVAL = 2        ; The player is allowed to move with this many ticks in delay
 PLAYER_CHAR_SAFE = $3e               ; Character code of player.
-PLAYER_CHAR_DANGER = $3d        ; Character code of player.
+PLAYER_CHAR_DANGER = $3f        ; Character code of player.
 KEYBOARDBUFFER = #$0277         ; keyboard buffer
 KEYPRESS = #$00C5               ; read from here to get key press
 KEYBUFFERCOUNTER = #$00C6       ; keyboard buffer counter
