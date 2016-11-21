@@ -59,7 +59,6 @@ phase_change: SUBROUTINE
 
     LDA #1                          ; Schedule lava generation for next tick.
     STA lava_next_generation        ; We do this because we don't want to clear the screen and generate lava at the same time. Looks weird.
-    INC score_p1                    ; Test by updating the score every tick. TODO: Remove this obviously.
 
     ; Change the lava color
 .updateColor:

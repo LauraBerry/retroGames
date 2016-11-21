@@ -19,6 +19,7 @@ lava_generate_sched: SUBROUTINE
     BNE .end                    ; If we're not scheduled to generate lava, decrement and return.
 
     JSR lava_generate           ; Otherwise, generate the lava.
+    INC score_p1                ; Update the score.
 
 .end:
     DEC lava_next_generation    ; Decrement our countdown.

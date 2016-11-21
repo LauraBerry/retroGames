@@ -43,7 +43,7 @@ lava_threshold:         ; If generated random bytes are >= this value, the tile 
 
 ; Score Stuff
 score_p1:
-    byte $0             ; This is our player's score. Goes to 255.
+    byte $FF            ; This is our player's score. Goes to 255.
 score_str:              ; String: "SCORE: \0"
     byte $13, $03, $0f, $12, $5, $2c, $20, $0
 score_p1_digits:        ; The number of hundreds, tens, and ones in the player's score.
