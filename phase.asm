@@ -29,12 +29,13 @@ phase_sched: SUBROUTINE
     ; Check if P1 has died.
     LDA player1_underTile
     CMP #LAVA_DANGER_CHAR
-    BNE .end
-    LDA #2
+    BNE .checkP2Death
+    LDA #3
     STA global_gameState
 
+.checkP2Death:
     ; Check if P2 has died.
-    LDA player1_underTile
+    LDA player2_underTile
     CMP #LAVA_DANGER_CHAR
     BNE .end
     LDA #2

@@ -58,7 +58,7 @@ main_game_loop:
     ; Check if we died.
     LDA global_gameState
     CMP #2
-    BEQ main_game_over
+    BCS main_game_over
 
 main_game_wait_loop:
     LDA MAIN_CLK+2              ; Load the LSB of the main clock
@@ -69,7 +69,7 @@ main_game_wait_loop:
     JMP main_game_loop
 main_game_over:
     JSR CLRSCN                  ; Clear the screen (Using kernal method.)
-    JSR print_gameover          ; Print "GAME OVER"
+    JSR menu_gameover           ; Print "GAME OVER"
 
 endLoop:
     JMP endLoop             ; Loop until they reset the machine
@@ -87,22 +87,8 @@ main_tick: SUBROUTINE       ; Tick function for the main game loop.
 
     RTS
 
-print_gameover: SUBROUTINE      ; Prints "GAME OVER" To the center of the screen
-    LDX #0
-.print:
-    LDA global_gameover_str,X   ; Location of string.
-    CMP #0                      ; Check null terminator
-    BEQ .end                    ; If we're at the null terminator, exit.
-
-    STA SCREEN_RAM+$f8,X            ; Print that char to the screen
-    LDA #$1                     ; Text Color
-    STA SCREEN_COLOR_RAM+$f8,X      ; Set the color
-    INX
-    BPL .print                  ; Iterate!
-.end
-    RTS
-
     ; Game logic files. The order of these shouldn't matter.
+    include "menu.asm"
     include "lava.asm"
     include "score.asm"
     include "phase.asm"
