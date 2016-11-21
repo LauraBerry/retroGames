@@ -19,7 +19,7 @@ score_init: SUBROUTINE
     LDA #$1                 ; Color Black
     STA SCREEN_COLOR_RAM,X  ; Set the color
     DEX                     ; Decrement Loop Counter
-    BPL .print         ; Iterate!
+    BPL .print              ; Iterate!
     RTS
 
 ;

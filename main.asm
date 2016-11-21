@@ -40,6 +40,8 @@ main_loop:                  ; Does menu stuff. Launches into the actual game.
     ; Do main menu stuff here.
 
     JSR score_init
+    LDA #0
+    STA global_gameState
 ; Runs the game. Calls tick() at set intervals until a game over setate is reached.
 
 main_game_loop:
@@ -53,22 +55,29 @@ main_game_loop:
 
     JSR main_tick               ; Call tick()
 
+    ; Check if we died.
+    LDA global_gameState
+    CMP #2
+    BEQ main_game_over
+
 main_game_wait_loop:
     LDA MAIN_CLK+2              ; Load the LSB of the main clock
     CMP #MAIN_TICKRATE          ; If its counted past our tickrate
     BCS main_game_loop          ; Loop to the next tick
     JMP main_game_wait_loop     ; Else, wait.
 
-    ; TODO: If game is over, break out of game loop
+    JMP main_game_loop
+main_game_over:
+    JSR CLRSCN                  ; Clear the screen (Using kernal method.)
+    JSR print_gameover          ; Print "GAME OVER"
 
-    ;JMP main_game_loop
-
-    ; TODO: Game over stuff happens here.
+endLoop:
+    JMP endLoop             ; Loop until they reset the machine
 
     JMP main_loop           ; Always jump back to main function (title screen) at game over.
 
 ; This is the tick function. This is called to update our game every frame.
-main_tick:                  ; Tick function for the main game loop.
+main_tick: SUBROUTINE       ; Tick function for the main game loop.
     JSR player_sched        ; Player Movement
     JSR phase_sched         ; If need be, change the lava's phase (Safe, Warning, Danger)
     JSR lava_generate_sched ; Lava Generation
@@ -76,6 +85,21 @@ main_tick:                  ; Tick function for the main game loop.
 
     JSR score_update        ; TODO: Remove this. We should only update when the score changes.
 
+    RTS
+
+print_gameover: SUBROUTINE      ; Prints "GAME OVER" To the center of the screen
+    LDX #0
+.print:
+    LDA global_gameover_str,X   ; Location of string.
+    CMP #0                      ; Check null terminator
+    BEQ .end                    ; If we're at the null terminator, exit.
+
+    STA SCREEN_RAM+$f8,X            ; Print that char to the screen
+    LDA #$1                     ; Text Color
+    STA SCREEN_COLOR_RAM+$f8,X      ; Set the color
+    INX
+    BPL .print                  ; Iterate!
+.end
     RTS
 
     ; Game logic files. The order of these shouldn't matter.
@@ -90,3 +114,4 @@ main_tick:                  ; Tick function for the main game loop.
 
     ; This is our font file. Include it last. It maps to memory location 7168
     include "font.asm"
+

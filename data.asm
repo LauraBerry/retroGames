@@ -19,6 +19,8 @@ global_lavaState:		;value used to decide if the game is in safe, warning or dang
 	byte 2				;0==Safe(color =black), 1== warning(color = yellow), 2== dangerous(color= red). Start in danger because we pre-increment.
 global_gameState:		;value used to decide if game is in a new game, game running or game over state
 	byte 0				;0=game running, 1= new game, 2 = game over
+global_gameover_str:    ; String: "GAME OVER"
+    byte $7, $1, $d, $5, $20, $f, $16, $5, $12, $0
 
 ; ************* Local Variables - General Memory ***************
 ; Define local variables in here.

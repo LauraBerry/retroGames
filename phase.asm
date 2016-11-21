@@ -12,14 +12,35 @@
 ;
 phase_sched: SUBROUTINE
     LDA phase_change_countdown      ; Load our countdown
-    BNE .end                        ; If we're not scheduled to change phase, decrement and return.
+    BNE .decrement                  ; If we're not scheduled to change phase, decrement and return.
 
     JSR phase_change                ; Otherwise, Change the phase
     LDA #PHASE_INTERVAL             ; Grab our phase change
     STA phase_change_countdown      ; Set it as our new countdown
 
-.end:
+.decrement:
     DEC phase_change_countdown      ; Decrement our countdown to the next phase change
+
+    ; Check if we're in the danger state.
+    LDA global_lavaState
+    CMP #2
+    BNE .end
+
+    ; Check if P1 has died.
+    LDA player1_underTile
+    CMP #LAVA_DANGER_CHAR
+    BNE .end
+    LDA #2
+    STA global_gameState
+
+    ; Check if P2 has died.
+    LDA player1_underTile
+    CMP #LAVA_DANGER_CHAR
+    BNE .end
+    LDA #2
+    STA global_gameState
+
+.end:
     RTS
 
 ;
@@ -32,8 +53,8 @@ phase_change: SUBROUTINE
     LDA global_lavaState
     CMP #3
     BNE .updateColor
-    LDA #0
-    STA global_lavaState
+    LDA #0                          ; Set the lava state to zero
+    STA global_lavaState            ; Store it
 
     LDA #1                          ; Schedule lava generation for next tick.
     STA lava_next_generation        ; We do this because we don't want to clear the screen and generate lava at the same time. Looks weird.
