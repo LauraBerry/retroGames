@@ -25,6 +25,11 @@ global_numPlayers:      ; 1 for 1-player game, 2 for 2-player game.
     byte $2
 global_playerWin_str:   ; "PLAYER   WINS!\0"
     byte $10, $c, $1, $19, $5, $12, $20, $20, $20, $17, $9, $e, $13, $3b, $0
+	
+One_Player_str:			;"1 PLAYER"
+	byte $31, $0, $10, $c, $1, $19, $5, $12
+Two_Player_str:			;"2 PLAYER"
+	byte $23, $0, $10, $c, $1, $19, $5, $12
 
 ; ************* Local Variables - General Memory ***************
 ; Define local variables in here.
