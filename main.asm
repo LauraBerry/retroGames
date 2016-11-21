@@ -71,7 +71,7 @@ main_game_over:
     JSR CLRSCN                  ; Clear the screen (Using kernal method.)
     JSR menu_gameover           ; Print "GAME OVER"
 
-endLoop:
+endLoop:                    ; TODO: Remove this. Let them start a new game.
     JMP endLoop             ; Loop until they reset the machine
 
     JMP main_loop           ; Always jump back to main function (title screen) at game over.
@@ -82,8 +82,6 @@ main_tick: SUBROUTINE       ; Tick function for the main game loop.
     JSR phase_sched         ; If need be, change the lava's phase (Safe, Warning, Danger)
     JSR lava_generate_sched ; Lava Generation
     JSR sfx_mute_sched      ; Call function for checking game state and rumbling if appropriate
-
-    JSR score_update        ; TODO: Remove this. We should only update when the score changes.
 
     RTS
 

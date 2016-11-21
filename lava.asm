@@ -20,6 +20,8 @@ lava_generate_sched: SUBROUTINE
 
     JSR lava_generate           ; Otherwise, generate the lava.
     INC score_p1                ; Update the score.
+    JSR score_update            ; Display the updated score.
+    JSR player_print            ; Redraw the players
 
 .end:
     DEC lava_next_generation    ; Decrement our countdown.

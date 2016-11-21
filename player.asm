@@ -12,7 +12,7 @@
 ;
 player_sched: SUBROUTINE
     LDA player_move_countdown       ; Load our countdown
-    BNE .end                        ; If we're not scheduled to change phase, decrement and return.
+    BNE .end                        ; If we're not scheduled to move players, decrement and return.
 
     JSR player_move                 ; Otherwise, Change the phase
     LDA #PLAYER_MOVE_INTERVAL       ; Grab our phase change
