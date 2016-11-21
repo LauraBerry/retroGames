@@ -44,10 +44,6 @@ score_str:              ; String: "SCORE: \0"
     byte $13, $03, $0f, $12, $5, $2c, $20, $0
 score_p1_digits:        ; The number of hundreds, tens, and ones in the player's score.
     byte 1,2,3
-	
-;Game Over Stuff
-Game_Over_str:			;String "Game Over"
-	byte $7, $1, $d, $5, $0, $f, $16, $5, $12 
 
 ; Color Stuff
 colorChoser_lcg_colorValue:		;Number storing the value of the color for the lava tiles
