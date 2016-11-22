@@ -12,8 +12,8 @@
 ; "-1 PLAYER
 ;   2 PLAYER"
 ;
-Player_mode_menu_init: SUBROUTINE
-	LDX #$10                ; player mode strings are 10 characters
+player_mode_menu_init: SUBROUTINE
+	LDX #$10                						; player mode strings are 10 characters
 	LDY #$50
 	LDA Player_Mode_selected
 	CMP #1
