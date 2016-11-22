@@ -52,3 +52,7 @@ sfx_rumble: SUBROUTINE
 ;    BEQ sfx_squelch        ; If sfx_count is zero, stop rumbling
 ;    DEC sfx_warningCount   ; Decrement the warning counter
     RTS
+
+# This is the routine that gets called to play the background music
+sfx_jukebox:
+

@@ -31,6 +31,18 @@ One_Player_str:			;"1 PLAYER"
 Two_Player_str:			;"2 PLAYER"
 	byte $23, $0, $10, $c, $1, $19, $5, $12
 
+; ************* SFX Variables - Music Arrays ***************
+sfx_theme_notes:        ; This is our sequence of notes
+    byte 191,201,207,209,191,0,191,201,207,209,215,209,201,207,0,201,209,191
+sfx_theme_timing:       ; This is our sequence of timings corresponding to each note
+    byte 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,10,20
+sfx_current_note:       ; Keeps track of the current location in the note array
+    byte 0
+sfx_current_timer:      ; Keeps track of the current location in the timing array
+    byte 0
+sfx_current_tick:       ; Keeps track of the current timer between game ticks
+    byte 0
+
 ; ************* Local Variables - General Memory ***************
 ; Define local variables in here.
 
