@@ -13,45 +13,45 @@
 ;   2 PLAYER"
 ;
 player_mode_menu_init: SUBROUTINE
-;	LDX #$10                						; player mode strings are 10 characters
-;	LDY #$50
-;	LDA Player_Mode_selected
+	LDX #$10                						; player mode strings are 10 characters
+	LDY #$50
+;	LDA player_mode_selected
 ;	CMP #1
 ;	BNE print_player_2_selected
-;.print:
+.print:
 ;	LDA One_Player_Selected,X         				; Location of player1 string.
-;	STA SCREEN_RAM,Y       							; Print that char to the screen
-;    LDA #$1                 						; Color Black
-;    STA SCREEN_COLOR_RAM,X 							; Set the color
-;    DEX                     						; Decrement Loop Counter
-;	DEY
-;    BPL .print              						; Iterate!
-;	LDY #$60
-;.print_player_2
+	STA SCREEN_RAM,Y       							; Print that char to the screen
+    LDA #$1                 						; Color Black
+    STA SCREEN_COLOR_RAM,X 							; Set the color
+    DEX                     						; Decrement Loop Counter
+	DEY
+    BPL .print              						; Iterate!
+	LDY #$60
+.print_player_2
 ;	LDA Two_Player_not_selected_str,X        		; Location of player2 string.
-;	STA SCREEN_RAM,Y       							; Print that char to the screen
-;    LDA #$1                 						; Color Black
-;    STA SCREEN_COLOR_RAM,X 							; Set the color
-;    DEX                     						; Decrement Loop Counter
-;	DEY
-;    BPL .print_player_2              				; Iterate!
-;    RTS
-;.print_player_2_selected:
+	STA SCREEN_RAM,Y       							; Print that char to the screen
+    LDA #$1                 						; Color Black
+    STA SCREEN_COLOR_RAM,X 							; Set the color
+    DEX                     						; Decrement Loop Counter
+	DEY
+    BPL .print_player_2              				; Iterate!
+    RTS
+.print_player_2_selected:
 ;	LDA One_Player_not_Selected,X         			; Location of player1 string.
-;    STA SCREEN_RAM,Y        						; Print that char to the screen
-;    LDA #$1                 						; Color Black
-;    STA SCREEN_COLOR_RAM,X  						; Set the color
-;    DEX                     						; Decrement Loop Counter
-;    BPL .print_player_2_selected		            ; Iterate!
-;    RTS
-;	LDY #$60
-;.print_player_2_2
+    STA SCREEN_RAM,Y        						; Print that char to the screen
+    LDA #$1                 						; Color Black
+    STA SCREEN_COLOR_RAM,X  						; Set the color
+    DEX                     						; Decrement Loop Counter
+    BPL .print_player_2_selected		            ; Iterate!
+    RTS
+	LDY #$60
+.print_player_2_2
 ;	LDA Two_Player_selected_str,X        			; Location of player2 string.
-;	STA SCREEN_RAM,Y        						; Print that char to the screen
-;    LDA #$1                 						; Color Black
-;    STA SCREEN_COLOR_RAM,X  						; Set the color
-;    DEX                     						; Decrement Loop Counter
-;    BPL .print_player_2_2		            		; Iterate!
+	STA SCREEN_RAM,Y        						; Print that char to the screen
+    LDA #$1                 						; Color Black
+    STA SCREEN_COLOR_RAM,X  						; Set the color
+    DEX                     						; Decrement Loop Counter
+    BPL .print_player_2_2		            		; Iterate!
 	RTS
 ;
 ; Prints "GAME OVER" To the center of the screen
@@ -127,4 +127,4 @@ menu_gameover: SUBROUTINE
 
 .end:
     RTS
-
+	
