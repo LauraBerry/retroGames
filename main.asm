@@ -38,12 +38,16 @@ main_basicEnd:
     JSR sfx_volume          ; Turn the volume up
 main_loop:                  ; Does menu stuff. Launches into the actual game.
     ; Do main menu stuff here.
-
+    JSR Player_mode_menu_init
     JSR score_init
     LDA #0
     STA global_gameState
 ; Runs the game. Calls tick() at set intervals until a game over setate is reached.
-
+	
+	;open 1 or 2 player menu
+	;controls for which one has the curser beside it.
+	; when enter is pressed jump to main_game_loop other wise keep shoing menu
+	
 main_game_loop:
     ; Calculate and store the time for our next tick.
 
