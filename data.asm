@@ -26,11 +26,6 @@ global_numPlayers:      ; 1 for 1-player game, 2 for 2-player game.
 global_playerWin_str:   ; "PLAYER   WINS!\0"
     byte $10, $c, $1, $19, $5, $12, $20, $20, $20, $17, $9, $e, $13, $3b, $0
 	
-
-
-; ************* Local Variables - General Memory ***************
-; Define local variables in here.
-
 ; ************* SFX Variables - Music Arrays ***************
 sfx_theme_notes:        ; This is our sequence of notes
     byte 191,201,207,209,191,0,191,201,207,209,215,209,201,207,0,201,209,191
@@ -42,6 +37,9 @@ sfx_current_timer:      ; Keeps track of the current location in the timing arra
     byte 0
 sfx_current_tick:       ; Keeps track of the current timer between game ticks
     byte 0
+
+; ************* Local Variables - General Memory ***************
+; Define local variables in here.
 
 ;Player Mode
 One_Player_Selected:	;"- 1 PLAYER"
