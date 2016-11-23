@@ -62,12 +62,13 @@ sfx_jukebox:
     CPY sfx_current_tick                      ; Compare current timer with note duration
     BNE .sfx_jukebox_end                      ; End music
     LDX SFX_QUIET                             ; Load X with 0
-    STX sfx_current_tick                      ; Reset timer
+    STX sfx_current_tick                      ; Reset timer to 0
     LDY sfx_current_note                      ; Load Y with current note index
     INY                                       ; Increment note index
     CPY #19                                   ; Compare Y with total number of notes
     BNE .sfx_jukebox_change
-    STY SFX_QUIET                             ; Reset note index
+    LDY SFX_QUIET                             ; Load Y with 0
+    STY sfx_current_note                      ; Reset note index
 .sfx_jukebox_change:
     STY sfx_current_note                      ; Store note index
     LDA sfx_theme_notes,Y                     ; Load A with current note value
