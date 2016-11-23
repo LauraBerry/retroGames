@@ -14,7 +14,7 @@
 ;
 player_mode_menu_init: SUBROUTINE
 	LDX #$10                						; player mode strings are 10 characters
-	LDY #$50
+	LDY #$25
 	LDA player_mode_selected
 	CMP #1
 	BNE .print_player_2_selected
