@@ -33,8 +33,6 @@ sfx_theme_timing:       ; This is our sequence of timings corresponding to each 
     byte 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,10,20
 sfx_current_note:       ; Keeps track of the current location in the note array
     byte 0
-sfx_current_timer:      ; Keeps track of the current location in the timing array
-    byte 0
 sfx_current_tick:       ; Keeps track of the current timer between game ticks
     byte 0
 
