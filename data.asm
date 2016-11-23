@@ -26,26 +26,23 @@ global_numPlayers:      ; 1 for 1-player game, 2 for 2-player game.
 global_playerWin_str:   ; "PLAYER   WINS!\0"
     byte $10, $c, $1, $19, $5, $12, $20, $20, $20, $17, $9, $e, $13, $3b, $0
 	
-One_Player_str:			;"1 PLAYER"
-	byte $31, $0, $10, $c, $1, $19, $5, $12
-Two_Player_str:			;"2 PLAYER"
-	byte $23, $0, $10, $c, $1, $19, $5, $12
 
-; ************* SFX Variables - Music Arrays ***************
-sfx_theme_notes:        ; This is our sequence of notes
-    byte 191,201,207,209,191,0,191,201,207,209,215,209,201,207,0,201,209,191
-sfx_theme_timing:       ; This is our sequence of timings corresponding to each note
-    byte 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,10,20
-sfx_current_note:       ; Keeps track of the current location in the note array
-    byte 0
-sfx_current_timer:      ; Keeps track of the current location in the timing array
-    byte 0
-sfx_current_tick:       ; Keeps track of the current timer between game ticks
-    byte 0
 
 ; ************* Local Variables - General Memory ***************
 ; Define local variables in here.
 
+;Player Mode
+One_Player_Selected:	;"- 1 PLAYER"
+		byte $1e, $0,$31, $0, $10, $c, $1, $19, $5, $12
+One_Player_not_selected_str:			;"  1 PLAYER"
+	byte $0,$0,$31, $0, $10, $c, $1, $19, $5, $12
+Two_Player_selected_str:			;"- 2 PLAYER"
+	byte $1E,$0, $23, $0, $10, $c, $1, $19, $5, $12
+Two_Player_not_selected_str:			;"  2 PLAYER"
+	byte $0,$0, $23, $0, $10, $c, $1, $19, $5, $12
+player_mode_selected:				;variable set to 1 if curser is beside "1 PLAYER"  and 2 if it is beside "2 PLAYER"
+	byte 1
+	
 ; Lava Stuff
 lava_next_generation:   ; The number of ticks until we generate a new lava pattern. Init to zero so we instantly generate it.
     byte 0
