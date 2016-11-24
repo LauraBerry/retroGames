@@ -60,17 +60,17 @@ sfx_jukebox: SUBROUTINE
     INX
     STX sfx_current_tick                      ; Update tick counter
     CPY sfx_current_tick                      ; Compare current tick count with note duration
-    BNE .sfx_jukebox_end                      ; End music
+    BNE .sfx_jukebox_end                      ; End music if timer is not finished
     LDX #SFX_QUIET                            ; Load X with 0
     STX sfx_current_tick                      ; Reset timer to 0
     LDY sfx_current_note                      ; Load Y with current note index
     INY                                       ; Increment note index
     CPY #19                                   ; Compare Y with total number of notes
     BNE .sfx_jukebox_change
-    LDX #SFX_QUIET                            ; Load Y with 0
+    LDX #SFX_QUIET                            ; Load X with 0
 .sfx_jukebox_change:
     STX sfx_current_note                      ; Store note index
-    LDA sfx_theme_notes,Y                     ; Load A with current note value
+    LDA sfx_theme_notes,X                     ; Load A with current note value
     STA SFX_LOWSOUND                          ; Store note value in the low speaker register
 .sfx_jukebox_end:
     RTS
