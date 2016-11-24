@@ -59,6 +59,9 @@ P2_KEY_RIGHT = 21
 P2_KEY_UP = 12
 P2_KEY_DOWN = 44
 
+KEY_1 = 0
+KEY_2 = 56
+
 ; SFX Stuff
 SFX_RUMBLE = 135                ; A low C tone for the noise speaker for the warning state
 SFX_QUIET = 0                   ; A constanct used for quieting any speaker making noise

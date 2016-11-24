@@ -9,50 +9,52 @@
 
 ;
 ; Prints player mode menu 
-; "-1 PLAYER
-;   2 PLAYER"
+; "- 1 PLAYER
+;    2 PLAYER"
 ;
 player_mode_menu_init: SUBROUTINE
-	LDX #$10                						; player mode strings are 10 characters
-	LDY #$25
-	LDA player_mode_selected
-	CMP #1
-	BNE .print_player_2_selected
-.print:
-	LDA One_Player_Selected,X         				; Location of player1 string.
-	STA SCREEN_RAM,Y       							; Print that char to the screen
-    LDA #$1                 						; Color Black
-    STA SCREEN_COLOR_RAM,X 							; Set the color
-    DEX                     						; Decrement Loop Counter
-	DEY
-    BPL .print              						; Iterate!
-	LDY #$60
-.print_player_2
-	LDA Two_Player_not_selected_str,X        		; Location of player2 string.
-	STA SCREEN_RAM,Y       							; Print that char to the screen
-    LDA #$1                 						; Color Black
-    STA SCREEN_COLOR_RAM,X 							; Set the color
-    DEX                     						; Decrement Loop Counter
-	DEY
-    BPL .print_player_2              				; Iterate!
-    RTS
-.print_player_2_selected:
-	LDA One_Player_not_selected_str,X         			; Location of player1 string.
-    STA SCREEN_RAM,Y        						; Print that char to the screen
-    LDA #$1                 						; Color Black
-    STA SCREEN_COLOR_RAM,X  						; Set the color
-    DEX                     						; Decrement Loop Counter
-    BPL .print_player_2_selected		            ; Iterate!
-    RTS
-	LDY #$60
-.print_player_2_2
-	LDA Two_Player_selected_str,X        			; Location of player2 string.
-	STA SCREEN_RAM,Y        						; Print that char to the screen
-    LDA #$1                 						; Color Black
-    STA SCREEN_COLOR_RAM,X  						; Set the color
-    DEX                     						; Decrement Loop Counter
-    BPL .print_player_2_2		            		; Iterate!
+	; Print Player 1 and player 2 menu strings
+	LDX #0
+.print_player1_str:
+    LDA menu_one_Player_str,X   ; Location of string.
+    CMP #0                      ; Check null terminator
+    BEQ .print_player1_str_end       ; If we're at the null terminator, exit.
+
+    STA SCREEN_RAM+$e4,X        ; Print that char to the screen
+    LDA #$1                     ; Text Color
+    STA SCREEN_COLOR_RAM+$e4,X  ; Set the color
+    INX
+    JMP .print_player1_str           ; Iterate!
+.print_player1_str_end:
+
+	LDX #0
+.print_player2_str:
+    LDA menu_two_Player_str,X   ; Location of string.
+    CMP #0                      ; Check null terminator
+    BEQ .print_player2_str_end       ; If we're at the null terminator, exit.
+
+    STA SCREEN_RAM+$110,X        ; Print that char to the screen
+    LDA #$1                     ; Text Color
+    STA SCREEN_COLOR_RAM+$110,X  ; Set the color
+    INX
+    JMP .print_player2_str           ; Iterate!
+.print_player2_str_end:
+
+.input_loop:
+	LDA KEYPRESS
+	CMP #KEY_1
+	BNE .check_two
+	;set to one player
+	LDA #1
+	JMP .end
+.check_two:
+	CMP #KEY_2
+	BNE .input_loop
+	;set to two player
+	LDA #2
+.end
 	RTS
+	
 ;
 ; Prints "GAME OVER" To the center of the screen
 ; Prints the score.

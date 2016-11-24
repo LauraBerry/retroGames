@@ -40,15 +40,11 @@ sfx_current_tick:       ; Keeps track of the current timer between game ticks
 ; Define local variables in here.
 
 ;Player Mode
-One_Player_Selected:	;"- 1 PLAYER"
-		byte $1e, $0,$31, $0, $10, $c, $1, $19, $5, $12
-One_Player_not_selected_str:			;"  1 PLAYER"
-	byte $0,$0,$31, $0, $10, $c, $1, $19, $5, $12
-Two_Player_selected_str:			;"- 2 PLAYER"
-	byte $1E,$0, $23, $0, $10, $c, $1, $19, $5, $12
-Two_Player_not_selected_str:			;"  2 PLAYER"
-	byte $0,$0, $23, $0, $10, $c, $1, $19, $5, $12
-player_mode_selected:				;variable set to 1 if curser is beside "1 PLAYER"  and 2 if it is beside "2 PLAYER"
+menu_one_Player_str:			;"  1 PLAYER"
+	byte $31, $20, $10, $c, $1, $19, $5, $12,$0
+menu_two_Player_str:			;"  2 PLAYER"
+	byte  $32, $20, $10, $c, $1, $19, $5, $12,$0
+menu_player_mode_selected:				;variable set to 1 if curser is beside "1 PLAYER"  and 2 if it is beside "2 PLAYER"
 	byte 1
 	
 ; Lava Stuff
