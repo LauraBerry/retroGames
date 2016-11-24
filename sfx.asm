@@ -57,15 +57,15 @@ sfx_rumble: SUBROUTINE
 sfx_jukebox: SUBROUTINE
     LDY sfx_theme_timing,sfx_current_note     ; Load Y as current note duration
     LDX sfx_current_tick                      ; Load X as current count
-    INX
+    INX                                       ; Increment tick count
     STX sfx_current_tick                      ; Update tick counter
     CPY sfx_current_tick                      ; Compare current tick count with note duration
     BNE .sfx_jukebox_end                      ; End music if timer is not finished
     LDX #SFX_QUIET                            ; Load X with 0
     STX sfx_current_tick                      ; Reset timer to 0
-    LDY sfx_current_note                      ; Load Y with current note index
-    INY                                       ; Increment note index
-    CPY #19                                   ; Compare Y with total number of notes
+    LDX sfx_current_note                      ; Load Y with current note index
+    INX                                       ; Increment note index
+    CPX #19                                   ; Compare Y with total number of notes
     BNE .sfx_jukebox_change
     LDX #SFX_QUIET                            ; Load X with 0
 .sfx_jukebox_change:
