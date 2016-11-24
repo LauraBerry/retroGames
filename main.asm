@@ -52,7 +52,7 @@ main_loop:                  ; Does menu stuff. Launches into the actual game.
 	
 main_game_loop:
     ; Calculate and store the time for our next tick.
-
+    
     ; Zero out the main clock.
     LDA #0
     STA MAIN_CLK
@@ -74,6 +74,7 @@ main_game_wait_loop:
 
     JMP main_game_loop
 main_game_over:
+	JSR sfx_stop_noise
     JSR CLRSCN                  ; Clear the screen (Using kernal method.)
     JSR menu_gameover           ; Print "GAME OVER"
 
@@ -88,6 +89,7 @@ main_tick: SUBROUTINE       ; Tick function for the main game loop.
     JSR phase_sched         ; If need be, change the lava's phase (Safe, Warning, Danger)
     JSR lava_generate_sched ; Lava Generation
     JSR sfx_mute_sched      ; Call function for checking game state and rumbling if appropriate
+	JSR sfx_jukebox         ; Call to music function
 
     RTS
 

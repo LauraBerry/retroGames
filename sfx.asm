@@ -54,7 +54,7 @@ sfx_rumble: SUBROUTINE
     RTS
 
 ; This is the routine that gets called to play the background music
-sfx_jukebox:
+sfx_jukebox: SUBROUTINE
     LDY sfx_theme_timing,sfx_current_note     ; Load Y as current note duration
     LDX sfx_current_tick                      ; Load X as current count
     INX
@@ -75,5 +75,9 @@ sfx_jukebox:
 .sfx_jukebox_end:
     RTS
 
-    
-
+; Function that stops the music	
+sfx_stop_noise: SUBROUTINE
+    LDX #SFX_QUIET
+    STX SFX_LOWSOUND
+	STX SFX_NOISE
+    RTS
