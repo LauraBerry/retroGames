@@ -55,8 +55,8 @@ sfx_rumble: SUBROUTINE
 
 ; This is the routine that gets called to play the background music
 sfx_jukebox:
-    LDY sfx_theme_timing,sfx_current_note     ; Load current note duration
-    LDX sfx_current_tick                      ; Load current count
+    LDY sfx_theme_timing,sfx_current_note     ; Load Y as current note duration
+    LDX sfx_current_tick                      ; Load X as current count
     INX
     STX sfx_current_tick
     CPY sfx_current_tick                      ; Compare current timer with note duration
@@ -68,7 +68,6 @@ sfx_jukebox:
     CPY #19                                   ; Compare Y with total number of notes
     BNE .sfx_jukebox_change
     LDY SFX_QUIET                             ; Load Y with 0
-    STY sfx_current_note                      ; Reset note index
 .sfx_jukebox_change:
     STY sfx_current_note                      ; Store note index
     LDA sfx_theme_notes,Y                     ; Load A with current note value
