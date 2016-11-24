@@ -89,7 +89,7 @@ main_tick: SUBROUTINE       ; Tick function for the main game loop.
     JSR phase_sched         ; If need be, change the lava's phase (Safe, Warning, Danger)
     JSR lava_generate_sched ; Lava Generation
     JSR sfx_mute_sched      ; Call function for checking game state and rumbling if appropriate
-	JSR sfx_jukebox         ; Call to music function
+    JSR sfx_jukebox         ; Call to music function
 
     RTS
 
