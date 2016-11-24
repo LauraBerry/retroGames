@@ -38,7 +38,26 @@ main_basicEnd:
     JSR sfx_volume          ; Turn the volume up
 main_loop:                  ; Does menu stuff. Launches into the actual game.
     ; Do main menu stuff here.
-    JSR player_mode_menu_init
+   JSR player_mode_menu_init
+;	LDA KEYPRESS
+;	CMP #83
+;	BEQ next:
+;	CMP #87
+;	BNE selected
+;next:
+;	LDA player_mode_selected
+;	CMP #1
+;	BNE re-set
+;	LDA #2
+;	STA player_mode_selected
+;	JMP main_loop
+;re-set:
+;	LDA #1
+;	STA player_mode_selected
+;	JMP main_loop
+;selected:	
+;	CMP #13
+;	BNE main_loop
     JSR score_init
     LDA #0
     STA global_gameState
