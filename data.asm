@@ -39,6 +39,15 @@ sfx_current_tick:       ; Keeps track of the current timer between game ticks
 ; ************* Local Variables - General Memory ***************
 ; Define local variables in here.
 
+;title screen
+;TODO: make ascii art for this?
+;menu_title:							;Pompeii 2
+;	byte: $10, $f, $d, $10, $5, $9, $9, $20, $32, $0
+;	
+;menu_sub_title:						;a trial by fire
+;		byte: $a, $20, $14, $12, $9, $a, $c, $20, $2, $19, $20, $6,  $9, $12, $5, $0
+;
+
 ;Player Mode
 menu_one_Player_str:			;"  1 PLAYER"
 	byte $10, $12,$5, $13, $13,$20, $31,$20,$6,$f, $12, $20,$31, $20, $10, $c, $1, $19, $5, $12,$0

@@ -15,6 +15,18 @@
 player_mode_menu_init: SUBROUTINE
 	; Print Player 1 and player 2 menu strings
 	LDX #0
+;.print_title_str:
+;    LDA menu_title,X   			; Location of string.
+;    CMP #0                      ; Check null terminator
+;    BEQ .print_title_end       ; If we're at the null terminator, exit.
+;
+;    STA SCREEN_RAM+$2E,X        ; Print that char to the screen
+;    LDA #$1                     ; Text Color
+;    STA SCREEN_COLOR_RAM+$2E,X  ; Set the color
+;    INX
+;    JMP .print_title_str           ; Iterate!
+;.print_title_end:
+;	LDX #0
 .print_player1_str:
     LDA menu_one_Player_str,X   ; Location of string.
     CMP #0                      ; Check null terminator
