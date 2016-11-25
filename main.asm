@@ -25,18 +25,19 @@ main_basicEnd:
     hex 00 00               ; The next BASIC line would start here
 
 ; ************* Assembly Code ***************
+main: SUBROUTINE
     ; ==THIS SETS UP THE FONT==
     ; Point us to our new character map. Must have included the font at the end.
     LDA #MAIN_CUSTOM_PTR    ; Grab the code for our custom charmap.
     STA MAIN_CHAR_PTR       ; This is where the machine determines our char map.
 
+.menu_loop:                 ; Does menu stuff. Launches into the actual game.
     ; Set up the screen
     JSR CLRSCN              ; Clear the screen (Using kernal method. May need to change.)
     LDA #12                 ; Background/border color. White on black.
     STA BACKGROUND_COLOR
-
     JSR sfx_volume          ; Turn the volume up
-main_loop:                  ; Does menu stuff. Launches into the actual game.
+
     ; Do main menu stuff here.
 	JSR player_mode_menu_init	; Display the main menu. Get the number of players in register A
 	STA global_numPlayers		; Store this in our number of players registers
@@ -48,9 +49,9 @@ main_loop:                  ; Does menu stuff. Launches into the actual game.
 	
 	;open 1 or 2 player menu
 	;controls for which one has the curser beside it.
-	; when enter is pressed jump to main_game_loop other wise keep shoing menu
+	; when enter is pressed jump to .game_loop other wise keep shoing menu
 	
-main_game_loop:
+.game_loop:
     ; Calculate and store the time for our next tick.
     
     ; Zero out the main clock.
@@ -64,24 +65,29 @@ main_game_loop:
     ; Check if we died.
     LDA global_gameState
     CMP #2
-    BCS main_game_over
+    BCS .game_over
 
-main_game_wait_loop:
-    LDA MAIN_CLK+2              ; Load the LSB of the main clock
-    CMP #MAIN_TICKRATE          ; If its counted past our tickrate
-    BCS main_game_loop          ; Loop to the next tick
-    JMP main_game_wait_loop     ; Else, wait.
+.game_wait_loop:
+    LDA MAIN_CLK+2          ; Load the LSB of the main clock
+    CMP #MAIN_TICKRATE      ; If its counted past our tickrate
+    BCS .game_loop          ; Loop to the next tick
+    JMP .game_wait_loop     ; Else, wait.
 
-    JMP main_game_loop
-main_game_over:
+    JMP .game_loop
+.game_over:
 	JSR sfx_stop_noise
-    JSR CLRSCN                  ; Clear the screen (Using kernal method.)
-    JSR menu_gameover           ; Print "GAME OVER"
+    JSR CLRSCN              ; Clear the screen (Using kernal method.)
+    JSR menu_gameover       ; Print "GAME OVER"
 
-endLoop:                    ; TODO: Remove this. Let them start a new game.
-    JMP endLoop             ; Loop until they reset the machine
+.input_loop:                ; Loop until the player presses space.
+	LDA KEYPRESS            ; Load keypress
+	CMP #KEY_SPACE          ; If they don't input a space
+	BNE .input_loop         ; Keep reading input.
 
-    JMP main_loop           ; Always jump back to main function (title screen) at game over.
+    ; Reset the game state.
+    JSR reset_gameState
+
+    JMP .menu_loop          ; Always jump back to main function (title screen) after game over.
 
 ; This is the tick function. This is called to update our game every frame.
 main_tick: SUBROUTINE       ; Tick function for the main game loop.
@@ -91,6 +97,29 @@ main_tick: SUBROUTINE       ; Tick function for the main game loop.
     JSR sfx_mute_sched      ; Call function for checking game state and rumbling if appropriate
     JSR sfx_jukebox         ; Call to music function
 
+    RTS
+
+; This function resets game state variables when we start a new game.
+reset_gameState: SUBROUTINE
+    LDA #2
+    STA global_lavaState        ; Lava state starts at 2 and immediately wraps around.
+    LDA #0
+    STA global_gameState        ; Game state is at 0 to start.
+    STA sfx_current_note        ; Reset SFX variables.
+    STA sfx_current_tick
+    STA sfx_warningCount
+    STA lava_next_generation    ; Countdowns should also be reset.
+    STA phase_change_countdown
+    STA player_move_countdown
+    LDA #$FF
+    STA score_p1                ; Start at $FF. Wraps around at first lava gen.
+    LDA #9
+    STA player1_y               ; Reset player coordinates.
+    STA player2_y
+    LDA #1
+    STA player1_x
+    LDA #20
+    STA player2_x
     RTS
 
     ; Game logic files. The order of these shouldn't matter.

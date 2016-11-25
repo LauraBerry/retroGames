@@ -25,6 +25,8 @@ global_numPlayers:      ; 1 for 1-player game, 2 for 2-player game.
     byte $2
 global_playerWin_str:   ; "PLAYER   WINS!\0"
     byte $10, $c, $1, $19, $5, $12, $20, $20, $20, $17, $9, $e, $13, $3b, $0
+global_restart_str: ; "SPACE TO RESTART"
+    byte $13, $10, $1, $3, $5, $20, $14, $f, $20, $12, $5, $13, $14, $1, $12, $14, $0
 	
 ; ************* SFX Variables - Music Arrays ***************
 sfx_theme_notes:        ; This is our sequence of notes

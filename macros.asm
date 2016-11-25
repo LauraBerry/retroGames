@@ -61,6 +61,8 @@ P2_KEY_DOWN = 44
 
 KEY_1 = 0
 KEY_2 = 56
+KEY_NONE = 64
+KEY_SPACE = 32
 
 ; SFX Stuff
 SFX_RUMBLE = 135                ; A low C tone for the noise speaker for the warning state

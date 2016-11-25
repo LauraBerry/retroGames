@@ -63,7 +63,7 @@ player_print: SUBROUTINE
 ;
 move_players: SUBROUTINE
     LDA KEYPRESS            ;load input from keyboard
-    CMP #64                 ;see if no key is pressed
+    CMP #KEY_NONE           ;see if no key is pressed
     BEQ .end                ;if no key is pressed quit out
     LDX KEYBUFFERCOUNTER    ;see how many keys are in buffer
 
