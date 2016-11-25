@@ -15,7 +15,7 @@
 player_mode_menu_init: SUBROUTINE
 	; Print Player 1 and player 2 menu strings
 	LDX #0
-;.print_title_str:
+.print_title_str:
 ;    LDA menu_title,X   			; Location of string.
 ;    CMP #0                      ; Check null terminator
 ;    BEQ .print_title_end       ; If we're at the null terminator, exit.
