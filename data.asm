@@ -41,12 +41,13 @@ sfx_current_tick:       ; Keeps track of the current timer between game ticks
 
 ;title screen
 ;TODO: make ascii art for this?
-;menu_title:							;Pompeii 2
-;	byte: $10, $f, $d, $10, $5, $9, $9, $20, $32, $0
-;	
-;menu_sub_title:						;a trial by fire
-;		byte: $a, $20, $14, $12, $9, $a, $c, $20, $2, $19, $20, $6,  $9, $12, $5, $0
-;
+menu_pompeii_str:							;Pompeii 2
+	byte $10, $f, $d, $10, $5, $9, $9, $20, $32, $0
+	
+menu_sub_title:						;a trial by fire
+		byte $1, $20, $14, $12, $9, $1, $c, $20, $2, $19, $20, $6,  $9, $12, $5, $0
+
+
 
 ;Player Mode
 menu_one_Player_str:			;"  1 PLAYER"
