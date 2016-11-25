@@ -39,14 +39,98 @@ player_mode_menu_init: SUBROUTINE
     JMP .print_sub_title_str           ; Iterate!
 .print_sub_title_end:
 	LDX #0
+.print_volcano_str:
+    LDA volcano_explostion_5_str,X   			; Location of string.
+    CMP #0                      ; Check null terminator
+    BEQ .print_volcano_end       ; If we're at the null terminator, exit.
+
+    STA SCREEN_RAM+$87,X        ; Print that char to the screen
+    LDA #$2                     ; Text Color
+    STA SCREEN_COLOR_RAM+$87,X  ; Set the color
+    INX
+    JMP .print_volcano_str           ; Iterate!
+.print_volcano_end	
+	LDX #0
+.print_volcano_2_str:
+    LDA volcano_explostion_4_str,X   			; Location of string.
+    CMP #0                      ; Check null terminator
+    BEQ .print_volcano_2_end       ; If we're at the null terminator, exit.
+
+    STA SCREEN_RAM+$9D,X        ; Print that char to the screen
+    LDA #$2                     ; Text Color
+    STA SCREEN_COLOR_RAM+$9D,X  ; Set the color
+    INX
+    JMP .print_volcano_2_str           ; Iterate!
+.print_volcano_2_end	
+	LDX #0
+.print_volcano_3_str:
+    LDA volcano_explostion_3_str,X   			; Location of string.
+    CMP #0                      ; Check null terminator
+    BEQ .print_volcano_3_end       ; If we're at the null terminator, exit.
+
+    STA SCREEN_RAM+$B3,X        ; Print that char to the screen
+    LDA #$2                     ; Text Color
+    STA SCREEN_COLOR_RAM+$B3,X  ; Set the color
+    INX
+    JMP .print_volcano_3_str           ; Iterate!
+.print_volcano_3_end	
+	LDX #0
+.print_volcano_7_str:
+    LDA volcano_explostion_3_str,X   			; Location of string.
+    CMP #0                      ; Check null terminator
+    BEQ .print_volcano_7_end       ; If we're at the null terminator, exit.
+
+    STA SCREEN_RAM+$C9,X        ; Print that char to the screen
+    LDA #$2                     ; Text Color
+    STA SCREEN_COLOR_RAM+$C9,X  ; Set the color
+    INX
+    JMP .print_volcano_7_str           ; Iterate!
+.print_volcano_7_end	
+	LDX #0	
+.print_volcano_4_str:
+    LDA volcano_fifth_from_bottom_str,X   			; Location of string.
+    CMP #0                      ; Check null terminator
+    BEQ .print_volcano_4_end       ; If we're at the null terminator, exit.
+
+    STA SCREEN_RAM+$DE,X        ; Print that char to the screen
+    LDA #$5                     ; Text Color
+    STA SCREEN_COLOR_RAM+$DE,X  ; Set the color
+    INX
+	JMP .print_volcano_4_str           ; Iterate!
+.print_volcano_4_end	
+	LDX #0
+.print_volcano_5_str:
+    LDA volcano_fourth_from_bottom_str,X   			; Location of string.
+    CMP #0                      ; Check null terminator
+    BEQ .print_volcano_5_end       ; If we're at the null terminator, exit.
+
+    STA SCREEN_RAM+$F4,X        ; Print that char to the screen
+    LDA #$5                     ; Text Color
+    STA SCREEN_COLOR_RAM+$F4,X  ; Set the color
+    INX
+	JMP .print_volcano_5_str           ; Iterate!
+.print_volcano_5_end	
+	LDX #0
+.print_volcano_6_str:
+    LDA volcano_third_from_bottom_str,X   			; Location of string.
+    CMP #0                      ; Check null terminator
+    BEQ .print_volcano_6_end       ; If we're at the null terminator, exit.
+
+    STA SCREEN_RAM+$10A,X        ; Print that char to the screen
+    LDA #$5                    ; Text Color
+    STA SCREEN_COLOR_RAM+$10A,X  ; Set the color
+    INX
+	JMP .print_volcano_6_str           ; Iterate!
+.print_volcano_6_end	
+	LDX #0
 .print_player1_str:
     LDA menu_one_Player_str,X   ; Location of string.
     CMP #0                      ; Check null terminator
     BEQ .print_player1_str_end       ; If we're at the null terminator, exit.
 
-    STA SCREEN_RAM+$DD,X        ; Print that char to the screen
+    STA SCREEN_RAM+$135,X        ; Print that char to the screen
     LDA #$1                     ; Text Color
-    STA SCREEN_COLOR_RAM+$DD,X  ; Set the color
+    STA SCREEN_COLOR_RAM+$135,X  ; Set the color
     INX
     JMP .print_player1_str           ; Iterate!
 .print_player1_str_end:
@@ -57,9 +141,9 @@ player_mode_menu_init: SUBROUTINE
     CMP #0                      ; Check null terminator
     BEQ .print_player2_str_end       ; If we're at the null terminator, exit.
 
-    STA SCREEN_RAM+$109,X        ; Print that char to the screen
+    STA SCREEN_RAM+$161,X        ; Print that char to the screen
     LDA #$1                     ; Text Color
-    STA SCREEN_COLOR_RAM+$109,X  ; Set the color
+    STA SCREEN_COLOR_RAM+$161,X  ; Set the color
     INX
     JMP .print_player2_str           ; Iterate!
 .print_player2_str_end:
