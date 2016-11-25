@@ -38,6 +38,7 @@ player_move:
 ;
 player_clear: SUBROUTINE
     PLAYER_CLEAR 1  ; We have a macro for clearing each player.
+    END_IF_SINGLEPLAYER
     PLAYER_CLEAR 2
     RTS
 
@@ -47,6 +48,7 @@ player_clear: SUBROUTINE
 ;
 movement_wrap: SUBROUTINE
     PLAYER_WRAP 1   ; We have a macro for doing movement wrapping based on player number.
+    END_IF_SINGLEPLAYER
     PLAYER_WRAP 2
     RTS
 
@@ -54,7 +56,8 @@ movement_wrap: SUBROUTINE
 ; Prints both characters to the screen.
 ;
 player_print: SUBROUTINE
-    PLAYER_PRINT 1  ; We have a macro for this too.
+    PLAYER_PRINT 1          ; We have a macro for this too.
+    END_IF_SINGLEPLAYER
     PLAYER_PRINT 2
     RTS
 
@@ -86,9 +89,14 @@ move_players: SUBROUTINE
     JMP .player_buffer      ; Go to next key.
 .checkp1Down:
     CMP #P1_KEY_DOWN
-    BNE .checkp2Left
+    BNE .check_p2
     INC player1_y           ; Move.
     JMP .player_buffer      ; Go to next key.
+
+.check_p2:                  ; Check if it's a 2p game.
+    LDA global_numPlayers   ; Load number of players
+    CMP #2                  ; Is it 2p?
+    BNE .player_buffer      ; If not, end.
 
     ; Check player 2's movements
 .checkp2Left:

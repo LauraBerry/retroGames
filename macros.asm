@@ -214,3 +214,16 @@ SFX_VOLUME = $900E              ; Volume register
     STA SCREEN_COLOR{2},X           ; Put it on the screen.
 
     ENDM
+
+    ; /////////////////////////////////////////////
+    ; Usage: end_if_singleplayer
+    ; Jumps to .end if we're playing a singleplayer game.
+    MAC END_IF_SINGLEPLAYER
+
+    LDA global_numPlayers
+    CMP #2
+    BEQ .p2_present
+    RTS
+.p2_present:
+
+    ENDM
