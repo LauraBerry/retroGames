@@ -11,7 +11,7 @@
 ; Prints player mode menu 
 ; "- 1 PLAYER
 ;    2 PLAYER"
-;
+;2E for title
 player_mode_menu_init: SUBROUTINE
 	; Print Player 1 and player 2 menu strings
 	LDX #0
@@ -20,9 +20,9 @@ player_mode_menu_init: SUBROUTINE
     CMP #0                      ; Check null terminator
     BEQ .print_player1_str_end       ; If we're at the null terminator, exit.
 
-    STA SCREEN_RAM+$e4,X        ; Print that char to the screen
+    STA SCREEN_RAM+$DD,X        ; Print that char to the screen
     LDA #$1                     ; Text Color
-    STA SCREEN_COLOR_RAM+$e4,X  ; Set the color
+    STA SCREEN_COLOR_RAM+$DD,X  ; Set the color
     INX
     JMP .print_player1_str           ; Iterate!
 .print_player1_str_end:
@@ -33,9 +33,9 @@ player_mode_menu_init: SUBROUTINE
     CMP #0                      ; Check null terminator
     BEQ .print_player2_str_end       ; If we're at the null terminator, exit.
 
-    STA SCREEN_RAM+$110,X        ; Print that char to the screen
+    STA SCREEN_RAM+$109,X        ; Print that char to the screen
     LDA #$1                     ; Text Color
-    STA SCREEN_COLOR_RAM+$110,X  ; Set the color
+    STA SCREEN_COLOR_RAM+$109,X  ; Set the color
     INX
     JMP .print_player2_str           ; Iterate!
 .print_player2_str_end:

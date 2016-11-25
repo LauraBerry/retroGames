@@ -41,9 +41,9 @@ sfx_current_tick:       ; Keeps track of the current timer between game ticks
 
 ;Player Mode
 menu_one_Player_str:			;"  1 PLAYER"
-	byte $31, $20, $10, $c, $1, $19, $5, $12,$0
+	byte $10, $12,$5, $13, $13,$20, $31,$20,$6,$f, $12, $20,$31, $20, $10, $c, $1, $19, $5, $12,$0
 menu_two_Player_str:			;"  2 PLAYER"
-	byte  $32, $20, $10, $c, $1, $19, $5, $12,$0
+	byte $10, $12,$5, $13, $13,$20, $32,$20,$6,$f, $12,$20,$32, $20, $10, $c, $1, $19, $5, $12,$0
 menu_player_mode_selected:				;variable set to 1 if curser is beside "1 PLAYER"  and 2 if it is beside "2 PLAYER"
 	byte 1
 	
