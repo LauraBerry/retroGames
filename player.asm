@@ -94,9 +94,9 @@ move_players: SUBROUTINE
     JMP .player_buffer      ; Go to next key.
 
 .check_p2:                  ; Check if it's a 2p game.
-    LDA global_numPlayers   ; Load number of players
-    CMP #2                  ; Is it 2p?
-    BNE .player_buffer      ; If not, end.
+    LDY global_numPlayers   ; Load number of players
+    CPY #2                  ; Is it 2p?
+    BNE .end                ; If not, end.
 
     ; Check player 2's movements
 .checkp2Left:
