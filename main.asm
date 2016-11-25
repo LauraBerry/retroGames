@@ -47,9 +47,11 @@ main: SUBROUTINE
     STA global_gameState
 ; Runs the game. Calls tick() at set intervals until a game over setate is reached.
 	
-	;open 1 or 2 player menu
-	;controls for which one has the curser beside it.
-	; when enter is pressed jump to .game_loop other wise keep shoing menu
+    ; Seed the RNG with how many jiffies the user spent at the main menu.
+    LDA MAIN_CLK+2
+    STA lava_lcg_data+1
+    LDA MAIN_CLK+1
+    STA lava_lcg_data
 	
 .game_loop:
     ; Calculate and store the time for our next tick.
