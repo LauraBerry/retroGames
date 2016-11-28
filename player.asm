@@ -72,16 +72,18 @@ get_joystick: SUBROUTINE
     LDY #0                  ; Enable input mode
     STY JOYSTICK_2_DDR      ; Store to joystick DDR 2.
 
-    CLC
-    LDY $0                  ; Y = 0
-    LDA JOYSTICK_2_IN       ; Bit 7 of this is 'right'
-    BPL .noRight            ; If bit 7 is unset, skip.
-    LDY $1                  ; Else, set Y = 1
-.noRight:
-    TYA                     ; Now A = 1 if right is pressed. 0 else.
-    ORA JOYSTICK_1_IN       ; A = A (OR) JOYSTICK_1_IN 
+    LDA JOYSTICK_1_IN       ; Load joystick input
+    LSR                     ; Shift it over.
+    EOR #$F                 ; Weird. 0 is pressed, 1 is not pressed. We need to invert.
     AND #$F                 ; Clear the high bits.
+    CLC
 
+    BIT JOYSTICK_2_IN       ; Test bit 7 of joystick 2's input.
+    BMI .end                ; If it's not set, we're going right.
+    CLC                     ; Clear carry bit
+    ADC #$1                 ; Add 1 to show we're going right.
+
+.end:
     LDY #$FF                ; Turn back to keyboard mode.
     STY JOYSTICK_2_DDR      ; Store value to joystick DDR 2
     RTS
@@ -90,93 +92,65 @@ get_joystick: SUBROUTINE
 ; Get the keyboard input.
 ;
 move_players: SUBROUTINE
+
+.player1Move:
     LDA KEYPRESS            ;load input from keyboard
     CMP #KEY_NONE           ;see if no key is pressed
-    BEQ .end                ;if no key is pressed quit out
-    LDX KEYBUFFERCOUNTER    ;see how many keys are in buffer
+    BEQ .player2Move        ;if no key is pressed quit out
+    ;LDX KEYBUFFERCOUNTER    ;see how many keys are in buffer
 
-.playerMove:
     ; Check player 1's movements
-    ; TODO: Use joystick for some movements.
     CMP #P1_KEY_LEFT
     BNE .checkp1Right       ; If they're not holding the button, continue
     DEC player1_x           ; Move.
-    JMP .player_buffer      ; Go to next key.
+    JMP .player2Move        ; Go to player 2's input routine
 .checkp1Right:
     CMP #P1_KEY_RIGHT
     BNE .checkp1Up
     INC player1_x           ; Move.
-    JMP .player_buffer      ; Go to next key.
+    JMP .player2Move        ; Go to player 2's input routine
 .checkp1Up:
     CMP #P1_KEY_UP
     BNE .checkp1Down
     DEC player1_y           ; Move.
-    JMP .player_buffer      ; Go to next key.
+    JMP .player2Move        ; Go to player 2's input routine
 .checkp1Down:
     CMP #P1_KEY_DOWN
-    BNE .check_p2
+    BNE .player2Move  
     INC player1_y           ; Move.
-    JMP .player_buffer      ; Go to next key.
+    JMP .player2Move        ; Go to player 2's input routine
 
-.check_p2:                  ; Check if it's a 2p game.
+.player2Move                ; Check if it's a 2p game.
     LDY global_numPlayers   ; Load number of players
     CPY #2                  ; Is it 2p?
     BNE .end                ; If not, end.
 
-;    JSR get_joystick        ; Get joystick input for P2
-;    TAY                     ; Put it in register Y
+    JSR get_joystick        ; Get joystick input for P2
+    TAY                     ; Put it in register Y
 
-;.checkp2Right:
-;    AND #$1
-;    BEQ .checkp2Left
-;    INC player2_x
-;    JMP .player_buffer
-;.checkp2Left:
-;    TYA
-;    AND #$8
-;    BEQ .checkp2Up
-;    DEC player2_x
-;    JMP .player_buffer
-;.checkp2Up:
-;    TYA
-;    AND #$2
-;    BEQ .checkp2Down
-;    DEC player2_y
-;    JMP .player_buffer
-;.checkp2Down:
-;    TYA
-;    AND #$4
-;    BEQ .player_buffer
-;    INC player2_y
-
-    ; Check player 2's movements
+.checkp2Right:              ; Basically the same as above.
+    TYA                     ; Input value stored in Y.
+    AND #$1                 ; Test direction
+    BEQ .checkp2Left        ; If not this direction, go to next direction
+    INC player2_x           ; Move the player
+    JMP .end                ; Exit input routine
 .checkp2Left:
-    CMP #P2_KEY_LEFT
-    BNE .checkp2Right       ; If they're not holding the button, continue
-    DEC player2_x           ; Move.
-    JMP .player_buffer      ; Go to next key.
-.checkp2Right:
-    CMP #P2_KEY_RIGHT
-    BNE .checkp2Up
-    INC player2_x           ; Move.
-    JMP .player_buffer      ; Go to next key.
+    TYA
+    AND #$8
+    BEQ .checkp2Up
+    DEC player2_x
+    JMP .end
 .checkp2Up:
-    CMP #P2_KEY_UP
-    BNE .checkp2Down
-    DEC player2_y           ; Move.
-    JMP .player_buffer      ; Go to next key.
+    TYA
+    AND #$2
+    BEQ .checkp2Down
+    DEC player2_y
+    JMP .end
 .checkp2Down:
-    CMP #P2_KEY_DOWN
-    BNE .player_buffer
-    INC player2_y           ; Move.
-    JMP .player_buffer      ; Go to next key.
-
-.player_buffer:
-    CPX #00
-    BEQ .end                ;if no more keys in buffer branch
-    DEX                     ;decrement buffer
-    LDA KEYBOARDBUFFER,x    ;load key from buffer
-    JMP .playerMove         ;check for movement
+    TYA
+    AND #$4
+    BEQ .end
+    INC player2_y
 
 .end:
     LDY #$00
