@@ -62,12 +62,12 @@ main: SUBROUTINE
     STA MAIN_CLK+1
     STA MAIN_CLK+2
 
-    JSR main_tick               ; Call tick()
+    JSR main_tick           ; Call tick()
 
     ; Check if we died.
-    LDA global_gameState
-    CMP #2
-    BCS .game_over
+    LDA global_gameState    ; Check gamestate
+    CMP #2                  ; If gamestate >= 2
+    BCS .game_over          ; Our game is over.
 
 .game_wait_loop:
     LDA MAIN_CLK+2          ; Load the LSB of the main clock

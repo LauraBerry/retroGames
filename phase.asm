@@ -40,10 +40,15 @@ phase_sched: SUBROUTINE
 
     ; Otherwise, check if P2 has died.
     LDA player2_underTile
-    CMP #LAVA_DANGER_CHAR
-    BNE .end
-    LDA #2
-    STA global_gameState
+    CMP #LAVA_DANGER_CHAR   ; Are they standing on a lava tile?
+    BNE .end                ; If not, continue.
+    LDX #2                  ; Load P1 wins value into X.
+    LDA global_gameState    ; Check if P1 has already died. Set the game to a P1 victory or a tie accordingly.
+    CMP #3                  ; P2 wins value in X?
+    BNE .storeState         ; If P1 has not died, store the P1 wins value.
+    LDX #4                  ; Else, store the tie game value.
+.storeState
+    STX global_gameState
 
 .end:
     RTS

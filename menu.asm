@@ -205,7 +205,7 @@ menu_gameover: SUBROUTINE
     CLC                         ; Make sure we start by clearing our carry bit.
     LDA score_p1_digits,X       ; Load this digit
     ADC #$30                    ; Add $30 to make it a display code
-    STA SCREEN_RAM+$115,X         ; Print to Screen
+    STA SCREEN_RAM+$115,X       ; Print to Screen
 
     DEX                         ; Loop Decrement
     BPL .print_digits           ; Loopyness
@@ -215,7 +215,28 @@ menu_gameover: SUBROUTINE
     CMP #$2                     ; If there are not 2
     BNE .multiplayer_end        ; Skip printing the winner.
 
+; Check if it's a tie.
+    LDA global_gameState        ; Load state
+    CMP #$4                     ; Compare to value for tie game
+    BNE .not_tie                ; If not a tie, print winner.
+
+    LDX #0
+.print_tie_str:
+    LDA global_tie_str,X        ; Location of string.
+    CMP #0                      ; Check null terminator
+    BEQ .print_tie_str_end      ; If we're at the null terminator, exit.
+
+    STA SCREEN_RAM+$13B,X       ; Print that char to the screen
+    LDA #$1                     ; Text Color
+    STA SCREEN_COLOR_RAM+$13B,X ; Set the color
+    INX
+    JMP .print_tie_str          ; Iterate!
+.print_tie_str_end:
+
+    JMP .multiplayer_end
+
 ; Print who won.
+.not_tie:
     LDX #0
 .print_winner_str:
     LDA global_playerWin_str,X  ; Location of string.
