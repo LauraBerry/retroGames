@@ -13,6 +13,10 @@ BACKGROUND_COLOR = $900f        ; Register that stores the border color for the 
 SCREEN_RAM = $1E00              ; This is the location of screen memory
 SCREEN_COLOR_RAM = $9600        ; The location of screen color memory.
 SCREEN_AUX_COLOR = $900E        ; Aux color. High bits are the color. Low bits are the volume.
+JOYSTICK_1_DDR = $9113          ; Set this to zero to enable joystick input
+JOYSTICK_2_DDR = $9122          ; Set this to zero to enable joystick input
+JOYSTICK_1_IN = $9111           ; Read most bits of joystick input from here
+JOYSTICK_2_IN = $9120           ; Read one more bit of joystick input from here.
 
 MAIN_CHAR_PTR = $9005           ; This address determines where we look for character maps.
 MAIN_CUSTOM_PTR = $FF           ; This points us to 7168 ($1c00) for our char map.

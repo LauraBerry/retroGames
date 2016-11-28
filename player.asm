@@ -62,6 +62,31 @@ player_print: SUBROUTINE
     RTS
 
 ;
+; Enables joystick input
+; Grabs the joystick input
+; Disables joystick input so we can use the keyboard.
+; Returns 5 bits corresponding to user input.
+; <right>,<up>,<down>,<left>
+;
+get_joystick: SUBROUTINE
+    LDY #0                  ; Enable input mode
+    STY JOYSTICK_2_DDR      ; Store to joystick DDR 2.
+
+    CLC
+    LDY $0                  ; Y = 0
+    LDA JOYSTICK_2_IN       ; Bit 7 of this is 'right'
+    BPL .noRight            ; If bit 7 is unset, skip.
+    LDY $1                  ; Else, set Y = 1
+.noRight:
+    TYA                     ; Now A = 1 if right is pressed. 0 else.
+    ORA JOYSTICK_1_IN       ; A = A (OR) JOYSTICK_1_IN 
+    AND #$F                 ; Clear the high bits.
+
+    LDY #$FF                ; Turn back to keyboard mode.
+    STY JOYSTICK_2_DDR      ; Store value to joystick DDR 2
+    RTS
+
+;
 ; Get the keyboard input.
 ;
 move_players: SUBROUTINE
@@ -97,6 +122,32 @@ move_players: SUBROUTINE
     LDY global_numPlayers   ; Load number of players
     CPY #2                  ; Is it 2p?
     BNE .end                ; If not, end.
+
+;    JSR get_joystick        ; Get joystick input for P2
+;    TAY                     ; Put it in register Y
+
+;.checkp2Right:
+;    AND #$1
+;    BEQ .checkp2Left
+;    INC player2_x
+;    JMP .player_buffer
+;.checkp2Left:
+;    TYA
+;    AND #$8
+;    BEQ .checkp2Up
+;    DEC player2_x
+;    JMP .player_buffer
+;.checkp2Up:
+;    TYA
+;    AND #$2
+;    BEQ .checkp2Down
+;    DEC player2_y
+;    JMP .player_buffer
+;.checkp2Down:
+;    TYA
+;    AND #$4
+;    BEQ .player_buffer
+;    INC player2_y
 
     ; Check player 2's movements
 .checkp2Left:

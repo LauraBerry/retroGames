@@ -31,6 +31,9 @@ main: SUBROUTINE
     LDA #MAIN_CUSTOM_PTR    ; Grab the code for our custom charmap.
     STA MAIN_CHAR_PTR       ; This is where the machine determines our char map.
 
+    LDA #0                  ; Enable joystick input 1. Don't do 2 because that messes up the keyboard.
+    STA JOYSTICK_1_DDR      ; Instead, enable 2 briefly when we need to read the joystick. Then disable.
+
 .menu_loop:                 ; Does menu stuff. Launches into the actual game.
     ; Set up the screen
     JSR CLRSCN              ; Clear the screen (Using kernal method. May need to change.)
