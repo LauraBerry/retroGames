@@ -227,3 +227,44 @@ SFX_VOLUME = $900E              ; Volume register
 .p2_present:
 
     ENDM
+
+    ; /////////////////////////////////////////////
+    ; Usage: PRINT_STR <string label>, <screen offset>
+    ; Prints a null-terminated string to the screen, at an offset from the start of screen memory.
+    MAC PRINT_STR
+
+    LDX #0
+.print_{1}:
+    LDA {1},X        ; Location of string.
+    CMP #0                      ; Check null terminator
+    BEQ .print_{1}_end      ; If we're at the null terminator, exit.
+
+    STA SCREEN_RAM+{2},X       ; Print that char to the screen
+    LDA #$1                     ; Text Color
+    STA SCREEN_COLOR_RAM+{2},X ; Set the color
+    INX
+    JMP .print_{1}          ; Iterate!
+.print_{1}_end:
+
+    ENDM
+
+    ; /////////////////////////////////////////////
+    ; Usage: PRINT_STR_COLOR <string label>, <screen offset>, <color>
+    ; Prints a null-terminated string to the screen, at an offset from the start of screen memory.
+    ; Same as above, but this lets you specify color
+    MAC PRINT_STR_COLOR
+
+    LDX #0
+.print_{1}:
+    LDA {1},X        ; Location of string.
+    CMP #0                      ; Check null terminator
+    BEQ .print_{1}_end      ; If we're at the null terminator, exit.
+
+    STA SCREEN_RAM+{2},X       ; Print that char to the screen
+    LDA #{3}                     ; Text Color
+    STA SCREEN_COLOR_RAM+{2},X ; Set the color
+    INX
+    JMP .print_{1}          ; Iterate!
+.print_{1}_end:
+
+    ENDM

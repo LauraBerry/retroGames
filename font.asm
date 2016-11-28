@@ -7,7 +7,7 @@
 
     org 7168 ; Map directly into memory for fonts.
 
-; char $0
+; char $0. We're actually using this as a null char. Hope we didn't need @ symbol!
 	byte %00111100		; ..XXXX..
 	byte %01000010		; .X....X.
 	byte %10011010		; X..XX.X.

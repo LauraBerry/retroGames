@@ -43,34 +43,25 @@ sfx_current_tick:       ; Keeps track of the current timer between game ticks
 ; ************* Local Variables - General Memory ***************
 ; Define local variables in here.
 
-;title screen
-;TODO: make ascii art for this?
+; Title screen
 menu_pompeii_str:							;Pompeii 2
 	byte $10, $f, $d, $10, $5, $9, $9, $20, $32, $0
 	
 menu_sub_title:						;a trial by fire
 	byte $1, $20, $14, $12, $9, $1, $c, $20, $2, $19, $20, $6,  $9, $12, $5, $0
 
-volcano_bottom_row_str:
-	byte $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $0
-volcano_second_from_bottom_str:
-	byte $20, $1f, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1f, $0
-volcano_third_from_bottom_str:
-	byte $20, $20,$1f, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1f, $0
-volcano_fourth_from_bottom_str:
-	byte $20, $20, $20,$1f, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1f, $0
-volcano_fifth_from_bottom_str:
-	byte $20, $20, $20,$20, $1f, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1f, $0
-volcano_explostion_str:
-	byte $20, $20, $20,$20,$20, $1c, $1b, $1b, $1b, $1b, $1b, $1b, $1d, $0
-volcano_explostion_2_str:
-	
-volcano_explostion_3_str:
-	byte $20, $20, $20,$20, $1c, $1b, $1b, $1b, $1b, $1b, $1b, $1d, $0
-volcano_explostion_4_str:
-	byte $20, $20, $1e, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1e, $0
-volcano_explostion_5_str:
+volcano_str_1:
 	byte $20, $20, $1f, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1f, $0
+volcano_str_2:
+	byte $20, $20, $1e, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1e, $0
+volcano_str_3:
+	byte $20, $20, $20,$20, $1c, $1b, $1b, $1b, $1b, $1b, $1b, $1d, $0
+volcano_str_4:
+	byte $20, $20, $20,$20, $1f, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1f, $0
+volcano_str_5:
+	byte $20, $20, $20,$1f, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1f, $0
+volcano_str_6:
+	byte $20, $20,$1f, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1b, $1f, $0
 
 ;Player Mode
 menu_one_Player_str:			;"  1 PLAYER"
