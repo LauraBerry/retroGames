@@ -101,6 +101,7 @@ main_tick: SUBROUTINE       ; Tick function for the main game loop.
     JSR lava_generate_sched ; Lava Generation
     JSR sfx_mute_sched      ; Call function for checking game state and rumbling if appropriate
     JSR sfx_jukebox         ; Call to music function
+    JSR scale_difficulty    ; Change the difficulty accordingly
     RTS
 
 ; This function resets game state variables when we start a new game.
@@ -129,6 +130,9 @@ reset_gameState: SUBROUTINE
     LDA #50
     STA lava_phase_interval     ; And lava phase interval.
     RTS
+
+; 
+increase_difficulty: SUBROUTINE
 
     ; Game logic files. The order of these shouldn't matter.
     include "menu.asm"

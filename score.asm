@@ -76,3 +76,11 @@ score_getDigits: SUBROUTINE
 .ones:
     STA score_p1_digits+2   ; The remainder is our ones place.
     RTS                     ; We're done. Return to caller.
+
+;
+; Sets the difficulty based on the current score.
+;
+scale_difficulty: SUBROUTINE
+    
+    RTS
+
