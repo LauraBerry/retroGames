@@ -70,7 +70,7 @@ KEY_SPACE = 32
 
 ; SFX Stuff
 SFX_RUMBLE = 135                ; A low C tone for the noise speaker for the warning state
-SFX_QUIET = 0                   ; A constanct used for quieting any speaker making noise
+SFX_QUIET = 0                   ; A constant used for quieting any speaker making noise
 SFX_LOWSOUND = $900A            ; The low sound register
 SFX_MIDSOUND = $900B            ; The mid sound register
 SFX_NOISE = $900D               ; The noise sound register
