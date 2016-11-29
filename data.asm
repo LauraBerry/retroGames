@@ -16,9 +16,9 @@
 
 ; Any game state vars that are not in zero page go here.
 global_lavaState:       ;value used to decide if the game is in safe, warning or dangerous mode
-    byte 2              ;0==Safe(color =black), 1== warning(color = yellow), 2== dangerous(color= red). Start in danger because we pre-increment.
+    byte 0              ;0==Safe(color =black), 1== warning(color = yellow), 2== dangerous(color= red). Start in danger because we pre-increment.
 global_gameState:       ;value used to decide if game is in a new game, game running or game over state
-    byte 0              ;0=game running, 1= new game, 2 = p1 wins, 3 = p2 wins, 4 = tie game.
+    byte 0              ;0=new game, 1= game running, 2 = p1 wins, 3 = p2 wins, 4 = tie game.
 global_gameover_str:    ; String: "GAME OVER\0"
     byte $7, $1, $d, $5, $20, $f, $16, $5, $12, $0
 global_numPlayers:      ; 1 for 1-player game, 2 for 2-player game.
@@ -88,7 +88,7 @@ lava_phase_interval:    ; Ticks between phases. Speed this up to make it more di
 
 ; Score Stuff
 score_p1:
-    byte $FF            ; This is our player's score. Goes to 255.
+    byte 0              ; This is our player's score. Goes to 255.
 score_str:              ; String: "SCORE: \0"
     byte $13, $03, $0f, $12, $5, $2c, $20, $0
 score_p1_digits:        ; The number of hundreds, tens, and ones in the player's score.
@@ -100,7 +100,7 @@ colorChoser_lcg_colorValue:     ;Number storing the value of the color for the l
 
 ; Phase Stuff
 phase_change_countdown:
-    byte 0                      ; Number of ticks until the phase of the game changes
+    byte 50                     ; Number of ticks until the phase of the game changes
 phase_lavaColors:
     byte 0,7,2                  ; Color values for lava when it's in safe, warning, danger
 

@@ -46,6 +46,8 @@ score_update: SUBROUTINE        ; This code is run over and over to update the s
     DEX                         ; Loop Decrement
     BPL .print_digits           ; Loopyness
 
+    JSR scale_difficulty        ; Change the difficulty to match the new score.
+
     RTS
 
 ;
@@ -81,6 +83,27 @@ score_getDigits: SUBROUTINE
 ; Sets the difficulty based on the current score.
 ;
 scale_difficulty: SUBROUTINE
-    
+    ; Change background color
+    ; 8-15 are the background colors.
+
+    ; Set the lava threshold. A lower number means more tiles are lava.
+    LDA score_p1                    ; Load Score
+    LSR                             ; Divide by 4
+    LSR
+    STA lava_threshold              ; Store this in lava_threshold
+    LDA #LAVA_DEFAULT_THRESHOLD     ; Load up the default threshold
+    SBC lava_threshold              ; Threshold = default - (4 * score)
+    STA lava_threshold              ; Store final value for threshold
+
+    ; Set the phase interval. This gets lower as the player's score goes up.
+    LDA score_p1
+    LSR
+    LSR
+    LSR
+    STA lava_phase_interval
+    LDA #PHASE_DEFAULT_INTERVAL
+    SBC lava_phase_interval
+    STA lava_phase_interval
+
     RTS
 

@@ -26,7 +26,6 @@ MAIN_CLK = $A0                  ; Points to the memory map of the hardware clock
 MAIN_TICKRATE = 2               ; Tick is called every MAIN_TICKRATE jiffies.
 
 ; Lava Stuff.
-;LAVA_INTERVAL = 40             ; A new lava pattern is generated every LAVA_INTERVAL ticks
 LAVA_LCG_MULT = 33              ; Multiplier for LCG
 LAVA_LCG_CONST = 1              ; Addition constant for LCG
 LAVA_LCG_SEED = 32000           ; Initial seed value for the LCG (Should be 16 bits)
@@ -36,18 +35,19 @@ LAVA_COLOR = 2                  ; Lava is red
 LAVA_START_OFFSET = 22          ; Generate lava at this offset so we have room on top for the player's score
 LAVA_SCREEN_OFFSET = LAVA_START_OFFSET + $100 ; Used for generating lava on the latter half of the screen.
 LAVA_SCREEN2_SIZE = $e4
+LAVA_DEFAULT_THRESHOLD = 128
 
 ; Phase Stuff
-PHASE_INTERVAL = 50             ; The phase is changed after this number of ticks.
+PHASE_DEFAULT_INTERVAL = 50     ; The phase is changed after this number of ticks.
 
 ; Player Stuff
 PLAYER_MOVE_INTERVAL = 2        ; The player is allowed to move with this many ticks in delay
-PLAYER_CHAR_SAFE = $3e               ; Character code of player.
+PLAYER_CHAR_SAFE = $3e          ; Character code of player.
 PLAYER_CHAR_DANGER = $3f        ; Character code of player.
 KEYBOARDBUFFER = #$0277         ; keyboard buffer
 KEYPRESS = #$00C5               ; read from here to get key press
 KEYBUFFERCOUNTER = #$00C6       ; keyboard buffer counter
-SCREEN0 = #SCREEN_RAM            ; start of SCREEN memory 7680
+SCREEN0 = #SCREEN_RAM           ; start of SCREEN memory 7680
 SCREEN1 = #SCREEN_RAM+176       ; start of second part of SCREEN memory 7856
 SCREEN2 = #SCREEN_RAM+2*(176)   ; start of third part of SCREEN memory 8032
 SCREEN_COLOR0 = #SCREEN_COLOR_RAM

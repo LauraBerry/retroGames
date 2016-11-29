@@ -19,7 +19,17 @@ lava_generate_sched: SUBROUTINE
     BNE .end                    ; If we're not scheduled to generate lava, decrement and return.
 
     JSR lava_generate           ; Otherwise, generate the lava.
+
+    LDA global_gameState
+    CMP #0
+    BEQ .newGame
     INC score_p1                ; Update the score.
+    JMP .redraw
+.newGame:
+    LDA #$1
+    STA global_gameState
+.redraw:
+
     JSR score_update            ; Display the updated score.
     JSR player_print            ; Redraw the players
 

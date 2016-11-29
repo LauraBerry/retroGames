@@ -49,16 +49,16 @@ main: SUBROUTINE
     LDA #0
     STA global_gameState
 ; Runs the game. Calls tick() at set intervals until a game over setate is reached.
-	
+
     ; Seed the RNG with how many jiffies the user spent at the main menu.
     LDA MAIN_CLK+2
     STA lava_lcg_data+1
     LDA MAIN_CLK+1
     STA lava_lcg_data
-	
+
 .game_loop:
     ; Calculate and store the time for our next tick.
-    
+
     ; Zero out the main clock.
     LDA #0
     STA MAIN_CLK
@@ -101,23 +101,19 @@ main_tick: SUBROUTINE       ; Tick function for the main game loop.
     JSR lava_generate_sched ; Lava Generation
     JSR sfx_mute_sched      ; Call function for checking game state and rumbling if appropriate
     JSR sfx_jukebox         ; Call to music function
-    JSR scale_difficulty    ; Change the difficulty accordingly
     RTS
 
 ; This function resets game state variables when we start a new game.
 reset_gameState: SUBROUTINE
-    LDA #2
-    STA global_lavaState        ; Lava state starts at 2 and immediately wraps around.
     LDA #0
     STA global_gameState        ; Game state is at 0 to start.
+    STA global_lavaState        ; Lava state is at 0 to start.
     STA sfx_current_note        ; Reset SFX variables.
     STA sfx_current_tick
     STA sfx_warningCount
     STA lava_next_generation    ; Countdowns should also be reset.
-    STA phase_change_countdown
     STA player_move_countdown
-    LDA #$FF
-    STA score_p1                ; Start at $FF. Wraps around at first lava gen.
+    STA score_p1
     LDA #9
     STA player1_y               ; Reset player coordinates.
     STA player2_y
@@ -125,13 +121,14 @@ reset_gameState: SUBROUTINE
     STA player1_x
     LDA #20
     STA player2_x
-    LDA #128                    ; Difficulty stuff. Set default lava threshold.
+    LDA #LAVA_DEFAULT_THRESHOLD ; Difficulty stuff. Set default lava threshold.
     STA lava_threshold
-    LDA #50
+    LDA #PHASE_DEFAULT_INTERVAL
     STA lava_phase_interval     ; And lava phase interval.
+    STA phase_change_countdown
     RTS
 
-; 
+;
 increase_difficulty: SUBROUTINE
 
     ; Game logic files. The order of these shouldn't matter.
