@@ -74,7 +74,7 @@ SFX_QUIET = 0                   ; A constanct used for quieting any speaker maki
 SFX_LOWSOUND = $900A            ; The low sound register
 SFX_MIDSOUND = $900B            ; The mid sound register
 SFX_NOISE = $900D               ; The noise sound register
-SFX_INTERVAL = 10               ; (might be redundant) The rumble noise only lasts for SFX_INTERVAL ticks
+SFX_INTERVAL = 20               ; The rumble noise only lasts for SFX_INTERVAL ticks
 SFX_VOLUME = $900E              ; Volume register
 
 ; ************* Assembler Macros ****************
