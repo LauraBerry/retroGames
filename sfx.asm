@@ -35,7 +35,9 @@ sfx_squelch: SUBROUTINE
 ; This is used to handle the audio queue that accompanies a warning state
 sfx_rumble: SUBROUTINE
     ; Load tone and countdown
-    LDA #SFX_INTERVAL
+    ;LDA #SFX_INTERVAL
+    LDA lava_phase_interval ; Load the phase interval.
+    ASL                     ; Goes for half the phase interval.
     STA sfx_warningCount
 
     LDY #SFX_RUMBLE     ; Load the rumble tone
