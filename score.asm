@@ -84,7 +84,16 @@ score_getDigits: SUBROUTINE
 ;
 scale_difficulty: SUBROUTINE
     ; Change background color
-    ; 8-15 are the background colors.
+    ; 8-15 are the background colors we want to use.
+    LDA score_p1                    ; Load player score.
+    LSR                             ; Divide by 8.
+    LSR
+    LSR
+    AND #$F                         ; Only use low bits.
+    ORA #8                          ; Make sure bit 3 is set.
+    STA BACKGROUND_COLOR            ; Store to background color.
+
+
 
     ; Set the lava threshold. A lower number means more tiles are lava.
     LDA score_p1                    ; Load Score

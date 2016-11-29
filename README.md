@@ -5,5 +5,5 @@ This is a Commodore VIC20 game about dodging lava. It was written for a retrogam
 To build, simply run the makefile. The resulting .prg file can be loaded into your favourite VIC-20 emulator (Or onto the hardware itself!)
 
 ## TODO:
- - Scaling difficulty/levels
  - Collision Detection
+ - Maybe some better input routines?
