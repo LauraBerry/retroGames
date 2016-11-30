@@ -113,12 +113,20 @@ player_move_countdown:
     byte 0                  ; Number of ticks until the phase of the game changes
 player1_x:                  ; Player 1 x location
     byte 1
-player2_x:                  ; Player 2 x location
-    byte 20
 player1_y:                  ; Player 1 y location
     byte 9
+player1_x_old:
+    byte 0
+player1_y_old:
+    byte 0
+player2_x:                  ; Player 2 x location
+    byte 20
 player2_y:                  ; Player 2 y location
     byte 9
+player2_x_old:
+    byte 0
+player2_y_old:
+    byte 0
 player1_offset:             ; Calculated offset for player 1
     byte 0
 player2_offset:             ; Calculated offset for player 2

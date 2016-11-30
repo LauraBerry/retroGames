@@ -30,6 +30,7 @@ player_move:
     JSR player_clear        ; Erase the players from the board.
     JSR move_players        ; Move the players based on user input
     JSR movement_wrap       ; Wrap the players around if they're outstepping their x and y bounds.
+    JSR collision_detect    ; Detects collision between P1 and P2.
     JSR player_print        ; Redraw the players
     RTS
 
@@ -50,6 +51,49 @@ movement_wrap: SUBROUTINE
     PLAYER_WRAP 1   ; We have a macro for doing movement wrapping based on player number.
     END_IF_SINGLEPLAYER
     PLAYER_WRAP 2
+    RTS
+
+;
+; Detects if 2 players are occupying the same space.
+;
+collision_detect: SUBROUTINE
+    LDA player1_x   ; Load player1's x
+    CMP player2_x   ; Compare to P2's x
+    BNE .end        ; if they're different' we're okay.
+
+    LDA player1_y   ; Load player1's y
+    CMP player2_y   ; CMP to p2's y
+    BNE .end        ; If they're different, we're okay.
+
+    ; Otherwise, move one of them back to their original position.
+    ; If p2 moved, move them back.
+    ; Else, if p1 moved, move them back.
+    ; Input seems nicer on keyboard. So I'm giving priority to P1 here.
+    ; Interestingly, players can move through eachother.
+    ; They just can't move into the same space.
+
+    ; Check if P2 moved.
+    LDA player2_x       ; Compare X coord.
+    CMP player2_x_old
+    BNE .p2moved
+    LDA player2_y       ; Compare Y coord.
+    CMP player2_y_old
+    BNE .p2moved
+    JMP .p2stationary   ; If neither differ, they didn't move.
+
+.p2moved:
+    LDA player2_x_old   ; Move P2 back.
+    STA player2_x
+    LDA player2_y_old
+    STA player2_y
+
+.p2stationary:
+    LDA player1_x_old   ; Move P1 Back.
+    STA player1_x
+    LDA player1_y_old
+    STA player1_y
+
+.end:
     RTS
 
 ;
@@ -92,6 +136,15 @@ get_joystick: SUBROUTINE
 ; Get the keyboard input.
 ;
 move_players: SUBROUTINE
+    ; First, store the current X and Y values of both players.
+    LDA player1_x
+    STA player1_x_old
+    LDA player1_y
+    STA player1_y_old
+    LDA player2_x
+    STA player2_x_old
+    LDA player2_y
+    STA player2_y_old
 
 .player1Move:
     LDA KEYPRESS            ;load input from keyboard
@@ -116,7 +169,7 @@ move_players: SUBROUTINE
     JMP .player2Move        ; Go to player 2's input routine
 .checkp1Down:
     CMP #P1_KEY_DOWN
-    BNE .player2Move  
+    BNE .player2Move
     INC player1_y           ; Move.
     JMP .player2Move        ; Go to player 2's input routine
 
