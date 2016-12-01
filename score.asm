@@ -93,14 +93,14 @@ scale_difficulty: SUBROUTINE
     STA lava_threshold              ; Store final value for threshold
 
     ; Set the phase interval. This gets lower as the player's score goes up.
-    LDA score_p1
+    LDA score_p1                    ; Load the score.
+    LSR                             ; Divide by 8.
     LSR
     LSR
-    LSR
-    STA lava_phase_interval
-    LDA #PHASE_DEFAULT_INTERVAL
-    SBC lava_phase_interval
-    STA lava_phase_interval
+    STA phase_interval              ; Store it in the phase_interval
+    LDA #PHASE_DEFAULT_INTERVAL     ; Load the devault interval
+    SBC phase_interval              ; Interval = default = (4*score)
+    STA phase_interval              ; Store the final value for phase interval.
 
     RTS
 

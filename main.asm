@@ -25,49 +25,44 @@ main_basicEnd:
     hex 00 00               ; The next BASIC line would start here
 
 ; ************* Assembly Code ***************
-main: SUBROUTINE
+main: SUBROUTINE                ; Main function. This is where our program starts.
     ; ==THIS SETS UP THE FONT==
     ; Point us to our new character map. Must have included the font at the end.
-    LDA #MAIN_CUSTOM_PTR    ; Grab the code for our custom charmap.
-    STA MAIN_CHAR_PTR       ; This is where the machine determines our char map.
+    LDA #MAIN_CUSTOM_PTR        ; Grab the code for our custom charmap.
+    STA MAIN_CHAR_PTR           ; This is where the machine determines our char map.
 
-    LDA #0                  ; Enable joystick input 1. Don't do 2 because that messes up the keyboard.
-    STA JOYSTICK_1_DDR      ; Instead, enable 2 briefly when we need to read the joystick. Then disable.
+    LDA #0                      ; Enable joystick input 1. Don't do 2 because that messes up the keyboard.
+    STA JOYSTICK_1_DDR          ; Instead, enable 2 briefly when we need to read the joystick. Then disable.
 
-.menu_loop:                 ; Does menu stuff. Launches into the actual game.
+.menu_loop:                     ; Does menu stuff. Launches into the actual game.
     ; Set up the screen
-    JSR CLRSCN              ; Clear the screen (Using kernal method. May need to change.)
-    LDA #12                 ; Background/border color. White on black.
-    STA BACKGROUND_COLOR
-    JSR sfx_volume          ; Turn the volume up
+    JSR CLRSCN                  ; Clear the screen (Using kernal method. May need to change.)
+    LDA #12                     ; Background/border color. White on black.
+    STA BACKGROUND_COLOR        ; Store it.
+    JSR sfx_volume              ; Turn DAT VOLUME UP
 
     ; Do main menu stuff here.
-	JSR player_mode_menu_init	; Display the main menu. Get the number of players in register A
-	STA global_numPlayers		; Store this in our number of players registers
+    JSR player_mode_menu_init   ; Display the main menu. Get the number of players in register A
 
-    JSR score_init
-    LDA #0
-    STA global_gameState
-; Runs the game. Calls tick() at set intervals until a game over setate is reached.
+    JSR score_init              ; Initialize the score display
+    LDA #0                      ; Start the game state at zero.
+    STA global_gameState        ; Store it.
 
     ; Seed the RNG with how many jiffies the user spent at the main menu.
-    LDA MAIN_CLK+2
-    STA lava_lcg_data+1
-    LDA MAIN_CLK+1
-    STA lava_lcg_data
+    LDA MAIN_CLK+2              ; Load the low byte of main clock.
+    STA lava_lcg_data+1         ; Store it to our seed.
+    LDA MAIN_CLK+1              ; Load the middle byte of main clokc.
+    STA lava_lcg_data           ; Store it to our seed.
 
-.game_loop:
-    ; Calculate and store the time for our next tick.
-
-    ; Zero out the main clock.
-    LDA #0
+.game_loop:                     ; Runs the game. Calls tick() at set intervals until a game over state is reached.
+    LDA #0                      ; Zero out the main clock
     STA MAIN_CLK
     STA MAIN_CLK+1
     STA MAIN_CLK+2
 
     JSR main_tick           ; Call tick()
 
-    ; Check if we died.
+    ; Check if the game is over
     LDA global_gameState    ; Check gamestate
     CMP #2                  ; If gamestate >= 2
     BCS .game_over          ; Our game is over.
@@ -78,21 +73,20 @@ main: SUBROUTINE
     BCS .game_loop          ; Loop to the next tick
     JMP .game_wait_loop     ; Else, wait.
 
-    JMP .game_loop
-.game_over:
-	JSR sfx_stop_noise
+    JMP .game_loop          ; Iterate!
+.game_over:                 ; When we hit here, it's game over.
+    JSR sfx_stop_noise      ; Mute any noise.
     JSR CLRSCN              ; Clear the screen (Using kernal method.)
     JSR menu_gameover       ; Print "GAME OVER"
 
 .input_loop:                ; Loop until the player presses space.
-	LDA KEYPRESS            ; Load keypress
-	CMP #KEY_SPACE          ; If they don't input a space
-	BNE .input_loop         ; Keep reading input.
+    LDA KEYPRESS            ; Load keypress
+    CMP #KEY_SPACE          ; If they don't input a space
+    BNE .input_loop         ; Keep reading input.
 
-    ; Reset the game state.
-    JSR reset_gameState
+    JSR reset_gameState     ; Reset the game state.
 
-    JMP .menu_loop          ; Always jump back to main function (title screen) after game over.
+    JMP .menu_loop          ; Always jump back to the title screen after gameover.
 
 ; This is the tick function. This is called to update our game every frame.
 main_tick: SUBROUTINE       ; Tick function for the main game loop.
@@ -123,14 +117,13 @@ reset_gameState: SUBROUTINE
     STA player2_x
     LDA #LAVA_DEFAULT_THRESHOLD ; Difficulty stuff. Set default lava threshold.
     STA lava_threshold
-    LDA #PHASE_DEFAULT_INTERVAL
-    STA lava_phase_interval     ; And lava phase interval.
+    LDA #PHASE_DEFAULT_INTERVAL ; And lava phase interval.
+    STA phase_interval          
     STA phase_change_countdown
     RTS
 
-;
-increase_difficulty: SUBROUTINE
-
+    ; //////////////////////////////////////////////////////
+    ; Other assembly files to include
     ; Game logic files. The order of these shouldn't matter.
     include "menu.asm"
     include "lava.asm"

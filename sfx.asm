@@ -13,7 +13,6 @@
 sfx_mute_sched: SUBROUTINE
     LDA sfx_warningCount    ; Load our countdown
     BNE .end                ; If we're not scheduled to generate lava, decrement and return.
-
     JSR sfx_squelch         ; Otherwise, generate the lava.
 
 .end:
@@ -35,23 +34,12 @@ sfx_squelch: SUBROUTINE
 ; This is used to handle the audio queue that accompanies a warning state
 sfx_rumble: SUBROUTINE
     ; Load tone and countdown
-    LDA lava_phase_interval ; Load the phase interval.
+    LDA phase_interval      ; Load the phase interval.
     LSR                     ; Goes for half the phase interval.
     STA sfx_warningCount
 
-    LDY #SFX_RUMBLE     ; Load the rumble tone
-    STY SFX_NOISE       ; Store tone in the Noise speaker register
-
-;    LDA sfx_warningCount   ; Load the rubble countdown
-;    BNE .end       ; If the rumble continues, decrement and return
-;
-;sfx_rumble_counterUpdate:
-;    LDX #SFX_INTERVAL      ; Load a fresh counter value
-;    STX sfx_warningCount   ; Reset the counter value
-
-.end:
-;    BEQ sfx_squelch        ; If sfx_count is zero, stop rumbling
-;    DEC sfx_warningCount   ; Decrement the warning counter
+    LDY #SFX_RUMBLE         ; Load the rumble tone
+    STY SFX_NOISE           ; Store tone in the Noise speaker register
     RTS
 
 ; This is the routine that gets called to play the background music
@@ -76,9 +64,9 @@ sfx_jukebox: SUBROUTINE
 .sfx_jukebox_end:
     RTS
 
-; Function that stops the music	
+; Function that stops the music 
 sfx_stop_noise: SUBROUTINE
     LDX #SFX_QUIET
     STX SFX_LOWSOUND
-	STX SFX_NOISE
+    STX SFX_NOISE
     RTS

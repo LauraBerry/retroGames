@@ -15,7 +15,7 @@ phase_sched: SUBROUTINE
     BNE .decrement                  ; If we're not scheduled to change phase, decrement and return.
 
     JSR phase_change                ; Otherwise, Change the phase
-    LDA lava_phase_interval         ; Grab our phase change
+    LDA phase_interval              ; Grab our phase change interval.
     STA phase_change_countdown      ; Set it as our new countdown
 
 .decrement:

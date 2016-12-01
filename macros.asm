@@ -13,11 +13,6 @@ BACKGROUND_COLOR = $900f        ; Register that stores the border color for the 
 SCREEN_RAM = $1E00              ; This is the location of screen memory
 SCREEN_COLOR_RAM = $9600        ; The location of screen color memory.
 SCREEN_AUX_COLOR = $900E        ; Aux color. High bits are the color. Low bits are the volume.
-JOYSTICK_1_DDR = $9113          ; Set this to zero to enable joystick input
-JOYSTICK_2_DDR = $9122          ; Set this to zero to enable joystick input
-JOYSTICK_1_IN = $9111           ; Read most bits of joystick input from here
-JOYSTICK_2_IN = $9120           ; Read one more bit of joystick input from here.
-
 MAIN_CHAR_PTR = $9005           ; This address determines where we look for character maps.
 MAIN_CUSTOM_PTR = $FF           ; This points us to 7168 ($1c00) for our char map.
 
@@ -34,7 +29,7 @@ LAVA_SAFE_CHAR = 32             ; Character 32 is a space.
 LAVA_COLOR = 2                  ; Lava is red
 LAVA_START_OFFSET = 22          ; Generate lava at this offset so we have room on top for the player's score
 LAVA_SCREEN_OFFSET = LAVA_START_OFFSET + $100 ; Used for generating lava on the latter half of the screen.
-LAVA_SCREEN2_SIZE = $e4
+LAVA_SCREEN2_SIZE = $e4         ; The number of characters in the screen after our divide.
 LAVA_DEFAULT_THRESHOLD = 128
 
 ; Phase Stuff
@@ -44,9 +39,9 @@ PHASE_DEFAULT_INTERVAL = 50     ; The phase is changed after this number of tick
 PLAYER_MOVE_INTERVAL = 2        ; The player is allowed to move with this many ticks in delay
 PLAYER_CHAR_SAFE = $3e          ; Character code of player.
 PLAYER_CHAR_DANGER = $3f        ; Character code of player.
-KEYBOARDBUFFER = #$0277         ; keyboard buffer
-KEYPRESS = #$00C5               ; read from here to get key press
-KEYBUFFERCOUNTER = #$00C6       ; keyboard buffer counter
+KEYBOARDBUFFER = $0277          ; keyboard buffer
+KEYPRESS = $00C5                ; read from here to get key press
+KEYBUFFERCOUNTER = $00C6        ; keyboard buffer counter
 SCREEN0 = #SCREEN_RAM           ; start of SCREEN memory 7680
 SCREEN1 = #SCREEN_RAM+176       ; start of second part of SCREEN memory 7856
 SCREEN2 = #SCREEN_RAM+2*(176)   ; start of third part of SCREEN memory 8032
@@ -54,17 +49,19 @@ SCREEN_COLOR0 = #SCREEN_COLOR_RAM
 SCREEN_COLOR1 = #SCREEN_COLOR_RAM+176
 SCREEN_COLOR2 = #SCREEN_COLOR_RAM+2*(176)
 
-P1_KEY_LEFT = 17
-P1_KEY_RIGHT = 18
-P1_KEY_UP = 9
-P1_KEY_DOWN = 41
-P2_KEY_LEFT = 20
-P2_KEY_RIGHT = 21
-P2_KEY_UP = 12
-P2_KEY_DOWN = 44
+; Joystick Input Registers
+JOYSTICK_1_DDR = $9113          ; Set this to zero to enable joystick input
+JOYSTICK_2_DDR = $9122          ; Set this to zero to enable joystick input
+JOYSTICK_1_IN = $9111           ; Read most bits of joystick input from here
+JOYSTICK_2_IN = $9120           ; Read one more bit of joystick input from here.
 
+; Some keycodes for reading user input.
 KEY_1 = 0
 KEY_2 = 56
+KEY_A = 17
+KEY_D = 18
+KEY_W = 9
+KEY_S = 41
 KEY_NONE = 64
 KEY_SPACE = 32
 
@@ -81,6 +78,7 @@ SFX_VOLUME = $900E              ; Volume register
     ; /////////////////////////////////////////////
     ; Player position wrapping function.
     ; Usage: player_wrap <player_num>
+    ; If the player is off the screen, wrap them to the other side of the screen.
     MAC PLAYER_WRAP
 
     LDA player{1}_x         ; Test x location
@@ -205,6 +203,7 @@ SFX_VOLUME = $900E              ; Volume register
     PLAYER_CLEAR_CHAR {1},1     ; Screen region 1
 .p{1}_end:
     ENDM
+    
 
     ; /////////////////////////////////////////////
     ; Usage: player_clear_char <player_num>,<screen_num>
@@ -220,13 +219,13 @@ SFX_VOLUME = $900E              ; Volume register
 
     ; /////////////////////////////////////////////
     ; Usage: end_if_singleplayer
-    ; Jumps to .end if we're playing a singleplayer game.
+    ; Returns from the current subroutine if we're playing singleplayer.
     MAC END_IF_SINGLEPLAYER
 
-    LDA global_numPlayers
-    CMP #2
-    BEQ .p2_present
-    RTS
+    LDA global_numPlayers           ; Load the number of players
+    CMP #2                          ; Is it 2?
+    BEQ .p2_present                 ; If yes, continue.
+    RTS                             ; Otherwise, return.
 .p2_present:
 
     ENDM
@@ -238,15 +237,15 @@ SFX_VOLUME = $900E              ; Volume register
 
     LDX #0
 .print_{1}:
-    LDA {1},X        ; Location of string.
+    LDA {1},X                   ; Location of string.
     CMP #0                      ; Check null terminator
-    BEQ .print_{1}_end      ; If we're at the null terminator, exit.
+    BEQ .print_{1}_end          ; If we're at the null terminator, exit.
 
-    STA SCREEN_RAM+{2},X       ; Print that char to the screen
+    STA SCREEN_RAM+{2},X        ; Print that char to the screen
     LDA #$1                     ; Text Color
-    STA SCREEN_COLOR_RAM+{2},X ; Set the color
+    STA SCREEN_COLOR_RAM+{2},X  ; Set the color
     INX
-    JMP .print_{1}          ; Iterate!
+    JMP .print_{1}              ; Iterate!
 .print_{1}_end:
 
     ENDM
@@ -259,15 +258,15 @@ SFX_VOLUME = $900E              ; Volume register
 
     LDX #0
 .print_{1}:
-    LDA {1},X        ; Location of string.
+    LDA {1},X                   ; Location of string.
     CMP #0                      ; Check null terminator
-    BEQ .print_{1}_end      ; If we're at the null terminator, exit.
+    BEQ .print_{1}_end          ; If we're at the null terminator, exit.
 
-    STA SCREEN_RAM+{2},X       ; Print that char to the screen
-    LDA #{3}                     ; Text Color
-    STA SCREEN_COLOR_RAM+{2},X ; Set the color
+    STA SCREEN_RAM+{2},X        ; Print that char to the screen
+    LDA #{3}                    ; Text Color
+    STA SCREEN_COLOR_RAM+{2},X  ; Set the color
     INX
-    JMP .print_{1}          ; Iterate!
+    JMP .print_{1}              ; Iterate!
 .print_{1}_end:
 
     ENDM

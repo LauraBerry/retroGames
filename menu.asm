@@ -6,7 +6,6 @@
 ; This gives us our main menu and game over screen.
 ;
 
-
 ;
 ; Prints player mode menu 
 ; "- 1 PLAYER
@@ -36,12 +35,14 @@ player_mode_menu_init: SUBROUTINE
     BNE .check_two
     ;set to one player
     LDA #1
+    STA global_numPlayers       ; Store this in our number of players registers
     JMP .end
 .check_two:
     CMP #KEY_2
     BNE .input_loop
     ;set to two player
     LDA #2
+    STA global_numPlayers       ; Store this in our number of players registers
 .end:
     RTS
     

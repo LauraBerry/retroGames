@@ -26,19 +26,21 @@ player_sched: SUBROUTINE
 ; Move the player
 ; Move the player(s) one square based on their input
 ;
-player_move:
+player_move: SUBROUTINE
     JSR player_clear        ; Erase the players from the board.
     JSR move_players        ; Move the players based on user input
     JSR movement_wrap       ; Wrap the players around if they're outstepping their x and y bounds.
     JSR collision_detect    ; Detects collision between P1 and P2.
     JSR player_print        ; Redraw the players
+
+.end:
     RTS
 
 ;
 ; Clear both characters from the screen
 ;
 player_clear: SUBROUTINE
-    PLAYER_CLEAR 1  ; We have a macro for clearing each player.
+    PLAYER_CLEAR 1          ; We have a macro for clearing each player.
     END_IF_SINGLEPLAYER
     PLAYER_CLEAR 2
     RTS
@@ -48,7 +50,7 @@ player_clear: SUBROUTINE
 ; If they have, wrap them around to the other side of the screen.
 ;
 movement_wrap: SUBROUTINE
-    PLAYER_WRAP 1   ; We have a macro for doing movement wrapping based on player number.
+    PLAYER_WRAP 1           ; We have a macro for doing movement wrapping based on player number.
     END_IF_SINGLEPLAYER
     PLAYER_WRAP 2
     RTS
@@ -59,11 +61,11 @@ movement_wrap: SUBROUTINE
 collision_detect: SUBROUTINE
     LDA player1_x   ; Load player1's x
     CMP player2_x   ; Compare to P2's x
-    BNE .end        ; if they're different' we're okay.
+    BNE .end        ; if they're different, no collisions.
 
     LDA player1_y   ; Load player1's y
     CMP player2_y   ; CMP to p2's y
-    BNE .end        ; If they're different, we're okay.
+    BNE .end        ; If they're different, no collisions.
 
     ; Otherwise, move one of them back to their original position.
     ; If p2 moved, move them back.
@@ -153,22 +155,22 @@ move_players: SUBROUTINE
     ;LDX KEYBUFFERCOUNTER    ;see how many keys are in buffer
 
     ; Check player 1's movements
-    CMP #P1_KEY_LEFT
+    CMP #KEY_A
     BNE .checkp1Right       ; If they're not holding the button, continue
     DEC player1_x           ; Move.
     JMP .player2Move        ; Go to player 2's input routine
 .checkp1Right:
-    CMP #P1_KEY_RIGHT
+    CMP #KEY_D
     BNE .checkp1Up
     INC player1_x           ; Move.
     JMP .player2Move        ; Go to player 2's input routine
 .checkp1Up:
-    CMP #P1_KEY_UP
+    CMP #KEY_W
     BNE .checkp1Down
     DEC player1_y           ; Move.
     JMP .player2Move        ; Go to player 2's input routine
 .checkp1Down:
-    CMP #P1_KEY_DOWN
+    CMP #KEY_S
     BNE .player2Move
     INC player1_y           ; Move.
     JMP .player2Move        ; Go to player 2's input routine
@@ -187,7 +189,7 @@ move_players: SUBROUTINE
     BEQ .checkp2Left        ; If not this direction, go to next direction
     INC player2_x           ; Move the player
     JMP .end                ; Exit input routine
-.checkp2Left:
+.checkp2Left:               ; Do the same for the other directions.
     TYA
     AND #$8
     BEQ .checkp2Up
@@ -207,5 +209,5 @@ move_players: SUBROUTINE
 
 .end:
     LDY #$00
-    STY KEYBUFFERCOUNTER    ;reset the keyboard buffer
+    STY KEYBUFFERCOUNTER    ; Reset the keyboard buffer
     RTS
