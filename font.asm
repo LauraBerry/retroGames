@@ -3,11 +3,13 @@
 ; (C) 2016 by Konrad Aust, Laura Berry, Andrew Lata, Yue Chen
 ; Include this file at the end of your assembly program to map this into memory region 7168
 ; It will become the character map if you set 0x9005 to 256
+; Font taken from here: 
+; https://github.com/dhepper/font8x8
 ; 
 
     org 7168 ; Map directly into memory for fonts.
 
-; char $0. We're actually using this as a null char. Hope we didn't need @ symbol!
+; char $0. We're actually using this as a null char.
     byte %00111100      ; ..XXXX..
     byte %01000010      ; .X....X.
     byte %10011010      ; X..XX.X.
@@ -16,240 +18,33 @@
     byte %10010100      ; X..X.X..
     byte %01000000      ; .X......
     byte %00111000      ; ..XXX...
-; char $1
-    byte %01111100      ; ...XX...
-    byte %11000110      ; ...XX...
-    byte %11000110      ; ..XXXX..
-    byte %11000110      ; ..X..X..
-    byte %11111110      ; .XX..XX.
-    byte %11000110      ; .XXXXXX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-; char $2
-    byte %11111100      ; .XXXXX..
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11111100      ; .XXXXX..
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11111100      ; .XXXXX..
-; char $3
-    byte %01111100      ; ..XXXX..
-    byte %11000110      ; .XX..XX.
-    byte %11000000      ; .XX.....
-    byte %11000000      ; .XX.....
-    byte %11000000      ; .XX.....
-    byte %11000000      ; .XX.....
-    byte %11000110      ; .XX..XX.
-    byte %01111100      ; ..XXXX..
-; char $4
-    byte %11111000      ; .XXXX...
-    byte %11001100      ; .XX.XX..
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000100      ; .XX..X..
-    byte %11001100      ; .XX.XX..
-    byte %11111000      ; .XXXX...
-; char $5
-    byte %11111110      ; .XXXXXX.
-    byte %11000000      ; .XX.....
-    byte %11000000      ; .XX.....
-    byte %11111000      ; .XXXX...
-    byte %11000000      ; .XX.....
-    byte %11000000      ; .XX.....
-    byte %11000000      ; .XX.....
-    byte %11111110      ; .XXXXXX.
-; char $6
-    byte %11111110      ; .XXXXXX.
-    byte %11000000      ; .XX.....
-    byte %11000000      ; .XX.....
-    byte %11111000      ; .XXXX...
-    byte %11000000      ; .XX.....
-    byte %11000000      ; .XX.....
-    byte %11000000      ; .XX.....
-    byte %11000000      ; .XX.....
-; char $7
-    byte %01111100      ; ..XXXX..
-    byte %11000110      ; .XX..XX.
-    byte %11000000      ; .XX.....
-    byte %11000000      ; .XX.....
-    byte %11001110      ; .XX.XXX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %01111100      ; ..XXXX..
-; char $8
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11111110      ; .XXXXXX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-; char $9
-    byte %01111110      ; ..XXXX..
-    byte %00011000      ; ...XX...
-    byte %00011000      ; ...XX...
-    byte %00011000      ; ...XX...
-    byte %00011000      ; ...XX...
-    byte %00011000      ; ...XX...
-    byte %00011000      ; ...XX...
-    byte %01111110      ; ..XXXX..
-; char $a
-    byte %00011110      ; ...XXXX.
-    byte %00001100      ; ....XX..
-    byte %00001100      ; ....XX..
-    byte %00001100      ; ....XX..
-    byte %00001100      ; ....XX..
-    byte %11001100      ; .XX.XX..
-    byte %11001100      ; .XX.XX..
-    byte %01111000      ; ..XXX...
-; char $b
-    byte %11000110      ; .XX..XX.
-    byte %11001100      ; .XX.XX..
-    byte %11011000      ; .XXXX...
-    byte %11110000      ; .XXX....
-    byte %11110000      ; .XXX....
-    byte %11011000      ; .XXXX...
-    byte %11001100      ; .XX.XX..
-    byte %11000110      ; .XX..XX.
-; char $c
-    byte %11000000      ; .XX.....
-    byte %11000000      ; .XX.....
-    byte %11000000      ; .XX.....
-    byte %11000000      ; .XX.....
-    byte %11000000      ; .XX.....
-    byte %11000000      ; .XX.....
-    byte %11000000      ; .XX.....
-    byte %11111110      ; .XXXXXX.
-; char $d
-    byte %11000110      ; .XX...XX
-    byte %11101110      ; .XXX.XXX
-    byte %11111110      ; .XXXXXXX
-    byte %11010110      ; .XX.X.XX
-    byte %11010110      ; .XX.X.XX
-    byte %11000110      ; .XX...XX
-    byte %11000110      ; .XX...XX
-    byte %11000110      ; .XX...XX
-; char $e
-    byte %11000110      ; .X...XX.
-    byte %11100110      ; .XX..XX.
-    byte %11110110      ; .XXX.XX.
-    byte %11011110      ; .XXXXXX.
-    byte %11001110      ; .XX.XXX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX...X.
-; char $f
-    byte %01111100      ; ..XXXX..
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %01111100      ; ..XXXX..
-; char $10
-    byte %11111100      ; .XXXXX..
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11111100      ; .XXXXX..
-    byte %11000000      ; .XX.....
-    byte %11000000      ; .XX.....
-    byte %11000000      ; .XX.....
-; char $11
-    byte %00111100      ; ..XXXX..
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11011110      ; .XX.XXX.
-    byte %11001110      ; .XX.XXX.
-    byte %01111011      ; ..XXX.XX
-; char $12
-    byte %11111100      ; .XXXXX..
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11111100      ; .XXXXX..
-    byte %11011000      ; .XXXX...
-    byte %11001100      ; .XX.XX..
-    byte %11000110      ; .XX..XX.
-; char $13
-    byte %01111100      ; ..XXXX..
-    byte %11000110      ; .XX..XX.
-    byte %11000000      ; .XX.....
-    byte %01111000      ; ..XXX...
-    byte %00001100      ; ....XX..
-    byte %00000110      ; .....XX.
-    byte %11000110      ; .XX..XX.
-    byte %01111100      ; ..XXXX..
-; char $14
-    byte %01111110      ; .XXXXXX.
-    byte %00011000      ; ...XX...
-    byte %00011000      ; ...XX...
-    byte %00011000      ; ...XX...
-    byte %00011000      ; ...XX...
-    byte %00011000      ; ...XX...
-    byte %00011000      ; ...XX...
-    byte %00011000      ; ...XX...
-; char $15
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %01111100      ; ..XXXX..
-; char $16
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %01101100      ; ..XXXX..
-    byte %01101100      ; ..XXXX..
-    byte %00111000      ; ...XX...
-    byte %00010000      ; ...XX...
-; char $17
-    byte %11000110      ; .XX...XX
-    byte %11000110      ; .XX...XX
-    byte %11000110      ; .XX...XX
-    byte %11010110      ; .XX...XX
-    byte %11010110      ; .XX.X.XX
-    byte %11111110      ; .XXXXXXX
-    byte %11101110      ; .XXX.XXX
-    byte %11000110      ; .XX...XX
-; char $18
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %01101100      ; ..XXXX..
-    byte %00111000      ; ...XX...
-    byte %01101100      ; ..XXXX..
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-; char $19
-    byte %01100110      ; .XX..XX.
-    byte %01100110      ; .XX..XX.
-    byte %01100110      ; .XX..XX.
-    byte %00111100      ; ..XXXX..
-    byte %00011000      ; ...XX...
-    byte %00011000      ; ...XX...
-    byte %00011000      ; ...XX...
-    byte %00011000      ; ...XX...
-; char $1a
-    byte %11111110      ; .XXXXXX.
-    byte %00000110      ; .....XX.
-    byte %00001100      ; ....XX..
-    byte %00011000      ; ...XX...
-    byte %00110000      ; ..XX....
-    byte %01100000      ; .XX.....
-    byte %11000000      ; .XX.....
-    byte %11111110      ; .XXXXXX.
+; Main letters
+    byte $30, $78, $cc, $cc, $fc, $cc, $cc, $00 ; Char $01 
+    byte $fc, $66, $66, $7c, $66, $66, $fc, $00 ; Char $02
+    byte $3c, $66, $c0, $c0, $c0, $66, $3c, $00 ; Char $03
+    byte $f8, $6c, $66, $66, $66, $6c, $f8, $00 ; Char $04
+    byte $fe, $62, $68, $78, $68, $62, $fe, $00 ; Char $05
+    byte $fe, $62, $68, $78, $68, $60, $f0, $00 ; Char $06
+    byte $3c, $66, $c0, $c0, $ce, $66, $3e, $00 ; Char $07
+    byte $cc, $cc, $cc, $fc, $cc, $cc, $cc, $00 ; Char $08
+    byte $78, $30, $30, $30, $30, $30, $78, $00 ; Char $09
+    byte $1e, $0c, $0c, $0c, $cc, $cc, $78, $00 ; Char $0A
+    byte $e6, $66, $6c, $78, $6c, $66, $e6, $00 ; Char $0B
+    byte $f0, $60, $60, $60, $62, $66, $fe, $00 ; Char $0C
+    byte $c6, $ee, $fe, $fe, $d6, $c6, $c6, $00 ; Char $0d
+    byte $c6, $e6, $f6, $de, $ce, $c6, $c6, $00 ; Char $0E
+    byte $38, $6c, $c6, $c6, $c6, $6c, $38, $00 ; Char $0F
+    byte $fc, $66, $66, $7c, $60, $60, $f0, $00 ; Char $10
+    byte $78, $cc, $cc, $cc, $dc, $78, $1c, $00 ; Char $11
+    byte $fc, $66, $66, $7c, $6c, $66, $e6, $00 ; Char $12
+    byte $78, $cc, $e0, $70, $1c, $cc, $78, $00 ; Char $13
+    byte $fc, $b4, $30, $30, $30, $30, $78, $00 ; Char $14
+    byte $cc, $cc, $cc, $cc, $cc, $cc, $fc, $00 ; Char $15
+    byte $cc, $cc, $cc, $cc, $cc, $78, $30, $00 ; Char $16
+    byte $c6, $c6, $c6, $d6, $fe, $ee, $c6, $00 ; Char $17
+    byte $c6, $c6, $6c, $38, $38, $6c, $c6, $00 ; Char $18
+    byte $cc, $cc, $cc, $78, $30, $30, $78, $00 ; Char $19
+    byte $fe, $c6, $8c, $18, $32, $66, $fe, $00 ; Char $1A
 ; char $1b
     byte %11111111      ; XXXXXXXX
     byte %11111111      ; XXXXXXXX
@@ -295,7 +90,7 @@
     byte %11111111      ; XXXXXXXX
     byte %11111111      ; XXXXXXXX
     byte %11111111      ; XXXXXXXX
-; char $20
+; char $20 (Space Character)
     byte %00000000      ; ........
     byte %00000000      ; ........
     byte %00000000      ; ........
@@ -439,96 +234,17 @@
     byte %00110000      ; ..XX....
     byte %01100000      ; .XX.....
     byte %00000000      ; ........
-; char $30
-    byte %01111100      ; .XXXXX..
-    byte %11000110      ; XX...XX.
-    byte %11000110      ; XX...XX.
-    byte %11000110      ; XX...XX.
-    byte %11000110      ; XX...XX.
-    byte %11000110      ; XX...XX.
-    byte %11000110      ; XX...XX.
-    byte %01111100      ; .XXXXX..
-; char $31
-    byte %00011000      ; ...XX...
-    byte %00111000      ; ..XXX...
-    byte %01111000      ; .XXXX...
-    byte %00011000      ; ...XX...
-    byte %00011000      ; ...XX...
-    byte %00011000      ; ...XX...
-    byte %00011000      ; ...XX...
-    byte %00011000      ; ...XX...
-; char $32
-    byte %01111100      ; .XXXXX..
-    byte %11000110      ; XX...XX.
-    byte %00000110      ; .....XX.
-    byte %00001100      ; ....XX..
-    byte %00110000      ; ..XX....
-    byte %01100000      ; .XX.....
-    byte %11000000      ; XX......
-    byte %11111110      ; XXXXXXX.
-; char $33
-    byte %01111100      ; .XXXXX..
-    byte %11000110      ; XX...XX.
-    byte %00000110      ; .....XX.
-    byte %00011100      ; ...XXX..
-    byte %00000110      ; .....XX.
-    byte %00000110      ; .....XX.
-    byte %11000110      ; XXX..XX.
-    byte %01111100      ; .XXXXX..
-; char $34
-    byte %00001100      ; .....XX.
-    byte %01101100      ; ..XX.XX.
-    byte %01101100      ; ..XX.XX.
-    byte %01101100      ; ..XX.XX.
-    byte %11001100      ; .XX..XX.
-    byte %11111110      ; .XXXXXXX
-    byte %00001100      ; .....XX.
-    byte %00001100      ; .....XX.
-; char $35
-    byte %11111110      ; XXXXXXX.
-    byte %11000000      ; XX......
-    byte %11000000      ; XX......
-    byte %11111100      ; XXXXXX..
-    byte %00000110      ; .....XX.
-    byte %00000110      ; .....XX.
-    byte %11000110      ; XX...XX.
-    byte %01111100      ; .XXXXX..
-; char $36
-    byte %00111100      ; XX......
-    byte %01100000      ; XX......
-    byte %11000000      ; XX......
-    byte %11111100      ; XXXXXX..
-    byte %11000110      ; XX...XX.
-    byte %11000110      ; XX...XX.
-    byte %11000110      ; XX...XX.
-    byte %01111100      ; .XXXXX..
-; char $37
-    byte %11111110      ; XXXXXXX.
-    byte %00000110      ; .....XX.
-    byte %00001100      ; ....XX..
-    byte %00001100      ; ....XX..
-    byte %00011000      ; ...XX...
-    byte %00011000      ; ...XX...
-    byte %00110000      ; ..XX....
-    byte %00110000      ; ..XX....
-; char $38
-    byte %01111100      ; ..XXXX..
-    byte %11000110      ; .XX..XX.
-    byte %11000110      ; .XX..XX.
-    byte %01111100      ; .XXXXXX.
-    byte %11000110      ; XX....XX.
-    byte %11000110      ; XX....XX.
-    byte %11000110      ; XX....XX.
-    byte %01111100      ; .XXXXXX.
-; char $39
-    byte %01111100      ; .XXXXX..
-    byte %11000110      ; XX...XX.
-    byte %11000110      ; XX...XX.
-    byte %11000110      ; XX...XX.
-    byte %01111110      ; .XXXXXX.
-    byte %00000110      ; .....XX.
-    byte %00001100      ; .....XX.
-    byte %01111000      ; .....XX.
+; Numbers go here.
+    byte $7c, $c6, $ce, $de, $f6, $e6, $7c, $00 ; '0' - Char $30
+    byte $30, $70, $30, $30, $30, $30, $fc, $00 ; '1' - Char $31
+    byte $78, $cc, $0c, $38, $60, $cc, $fc, $00 ; '2' - Char $32
+    byte $78, $cc, $0c, $38, $0c, $cc, $78, $00 ; '3' - Char $33
+    byte $1c, $3c, $6c, $cc, $fe, $0c, $1e, $00 ; '4' - Char $34
+    byte $fc, $c0, $f8, $0c, $0c, $cc, $78, $00 ; '5' - Char $35
+    byte $38, $60, $c0, $f8, $cc, $cc, $78, $00 ; '6' - Char $36
+    byte $fc, $cc, $0c, $18, $30, $30, $30, $00 ; '7' - Char $37
+    byte $78, $cc, $cc, $78, $cc, $cc, $78, $00 ; '8' - Char $38
+    byte $78, $cc, $cc, $7c, $0c, $18, $70, $00 ; '9' - Char $39
 ; char $3a
     byte %10000000      ; X.......
     byte %10000000      ; X.......
