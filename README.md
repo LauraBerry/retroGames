@@ -1,4 +1,5 @@
 # Pompeii II
+Written by Konrad Aust, Laura Berry, Andrew Lata, and Yue Chen
 
 This is a Commodore VIC20 game about dodging lava. It was written for a retrogames course at the University of Calgary.
 
